@@ -1,4 +1,5 @@
 function [idx, dist, vertices_tin, calidad_tin, planos]=f_preparaTIN_v03_nocoplanartest(P, npb)
+% [idx, dist, vertices_tin, calidad_tin, planos]=f_preparaTIN_v03_nocoplanartest(P, npb)
 %% Función que prepara los puntos y genera los planos objeto de estudio
 % Adrián Riquelme, abril 2013
 % VERSIÓN QUE NO COMPRUEBA LOS COPLANARES
@@ -14,6 +15,26 @@ function [idx, dist, vertices_tin, calidad_tin, planos]=f_preparaTIN_v03_nocopla
 % - vertices_tin: matriz que indica los puntos que forman parte del plano
 % - calidad_tin: indica el n de puntos que forman cada plano
 % - planos: matriz que contiene la ecuaciï¿½n de cada plano, ABCD
+
+%    Copyright (C) {2015}  {Adrián Riquelme Guill, adririquelme@gmail.com}
+%
+%    This program is free software; you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation; either version 2 of the License, or
+%    any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License along
+%   with this program; if not, write to the Free Software Foundation, Inc.,
+%   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+%    Discontinuity Set Extractor, Copyright (C) 2015 Adrián Riquelme Guill
+%    Discontinuity Set Extractor comes with ABSOLUTELY NO WARRANTY.
+%    This is free software, and you are welcome to redistribute it
+%    under certain conditions.
 
 % cargamos los puntos en una matriz de np x 3
 % P = load ('puntos.txt');

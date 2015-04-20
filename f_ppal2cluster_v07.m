@@ -1,4 +1,5 @@
 function [ puntos_familia_cluster, familia_cluster_plano ] = f_ppal2cluster_v07( puntos_ppalasignados, planos_pples, ppcluster,vnfamilia,ksigmas)
+% [ puntos_familia_cluster, familia_cluster_plano ] = f_ppal2cluster_v07( puntos_ppalasignados, planos_pples, ppcluster,vnfamilia,ksigmas)
 % Function that takes the families assigned to each point and calculates
 % the clusters.
 % Each cluster is a real plane, with the same normal vector
@@ -15,7 +16,7 @@ function [ puntos_familia_cluster, familia_cluster_plano ] = f_ppal2cluster_v07(
 % - familia_cluster_plano: matriz que contiene qué familia, a qué cluster y
 % la ecuación del plano del clúster notación Ax+By+Cz+D=0. Es una matriz de
 % índices
-
+%
 % El vector normal puede calcularse ajustándo al clúster o utilizar
 % El de toda la familia. Si vnfamilia=0 el plano se ajusta al clúster, si vnfamilia=1 se utiliza la orientación del plano principal. 
 % En ambos casos, la posición del plano se determina a posteriori.
@@ -26,6 +27,27 @@ function [ puntos_familia_cluster, familia_cluster_plano ] = f_ppal2cluster_v07(
 % ksigmas=1 solape mayor al 15,8%
 % ksigmas=2 solape mayor al 2,3%
 % ksigmas=3 solape mayor al 0,1%
+%
+%    Copyright (C) {2015}  {Adrián Riquelme Guill, adririquelme@gmail.com}
+%
+%    This program is free software; you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation; either version 2 of the License, or
+%    any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License along
+%   with this program; if not, write to the Free Software Foundation, Inc.,
+%   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+%    Discontinuity Set Extractor, Copyright (C) 2015 Adrián Riquelme Guill
+%    Discontinuity Set Extractor comes with ABSOLUTELY NO WARRANTY.
+%    This is free software, and you are welcome to redistribute it
+%    under certain conditions.
+
         
 ksigmaseps = 2; % parámetro para determinar el radio de búsqueda de puntos en el DBSCAN
 % es cuántas desviaciones sobre la distancia media del 4 vecino se toma.

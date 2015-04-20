@@ -1,6 +1,26 @@
 function [P, calidad_tin, planos]=f_setup_planes_v06(P, npb, tolerancia)
 %% Función que prepara los puntos y genera los planos objeto de estudio
 % Adrián Riquelme, abril 2013
+%    {For a set of points calculates the k nearest neighbours and calculates its coplanarity and its normal vector}
+%    Copyright (C) {2015}  {Adrián Riquelme Guill, adririquelme@gmail.com}
+%
+%    This program is free software; you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation; either version 2 of the License, or
+%    any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License along
+%   with this program; if not, write to the Free Software Foundation, Inc.,
+%   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+%    Discontinuity Set Extractor, Copyright (C) 2015 Adrián Riquelme Guill
+%    Discontinuity Set Extractor comes with ABSOLUTELY NO WARRANTY.
+%    This is free software, and you are welcome to redistribute it
+%    under certain conditions.
 % Input: - P. matriz de nx3 que contiene las coordenadas de los puntos
 % V05: el test de coplanaridad sólo admite aquellos que sean coplanares,
 % los que no los eliminará

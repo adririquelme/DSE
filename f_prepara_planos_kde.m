@@ -1,4 +1,5 @@
 function [polos_pples, polos_pples_cart, density, X, Y]=f_prepara_planos_kde(polos_estereo_cartesianas,nsec, angulovpples, maxpples)
+% [polos_pples, polos_pples_cart, density, X, Y]=f_prepara_planos_kde(polos_estereo_cartesianas,nsec, angulovpples, maxpples)
 %% Función que busca los planos principales mediante la estimación de densidad de kernels
 % Se determinan los polos del vector normal al plano.
 % Input:
@@ -12,6 +13,26 @@ function [polos_pples, polos_pples_cart, density, X, Y]=f_prepara_planos_kde(pol
 % - density: valores de la función de densidad
 % - X: coordenadas x de los bins de la función de densidad
 % - Y: coordenadas y de los bins de la función de densidad
+%    Copyright (C) {2015}  {Adrián Riquelme Guill, adririquelme@gmail.com}
+%
+%    This program is free software; you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation; either version 2 of the License, or
+%    any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License along
+%   with this program; if not, write to the Free Software Foundation, Inc.,
+%   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+%    Discontinuity Set Extractor, Copyright (C) 2015 Adrián Riquelme Guill
+%    Discontinuity Set Extractor comes with ABSOLUTELY NO WARRANTY.
+%    This is free software, and you are welcome to redistribute it
+%    under certain conditions.
+
 % Creamos la función de densidad mediante los kernels
 % nsec = input('Introduce el num de sectores a considerar.\nPotencia de 2: 2,4,8,16,32,64,128... \nRecomendable 64, 2^6=64: \n');
 densidadminima = 0.0001; %establezco la densidad mínima en tanto por uno
