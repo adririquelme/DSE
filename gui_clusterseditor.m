@@ -1,24 +1,4 @@
 function varargout = gui_clusterseditor(varargin)
-%    {Cluster editor for DSE}
-%    Copyright (C) {2015}  {Adrián Riquelme Guill, adririquelme@gmail.com}
-%
-%    This program is free software; you can redistribute it and/or modify
-%    it under the terms of the GNU General Public License as published by
-%    the Free Software Foundation; either version 2 of the License, or
-%    any later version.
-%
-%    This program is distributed in the hope that it will be useful,
-%    but WITHOUT ANY WARRANTY; without even the implied warranty of
-%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-%    GNU General Public License for more details.
-%
-%    You should have received a copy of the GNU General Public License along
-%   with this program; if not, write to the Free Software Foundation, Inc.,
-%   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-%    Discontinuity Set Extractor, Copyright (C) 2015 Adrián Riquelme Guill
-%    Discontinuity Set Extractor comes with ABSOLUTELY NO WARRANTY.
-%    This is free software, and you are welcome to redistribute it
-%    under certain conditions.
 % GUI_CLUSTERSEDITOR MATLAB code for gui_clusterseditor.fig
 %      GUI_CLUSTERSEDITOR, by itself, creates a new GUI_CLUSTERSEDITOR or raises the existing
 %      singleton*.
@@ -82,7 +62,11 @@ familia_cluster_plano_fullclusters=getappdata(0,'familia_cluster_plano_fullclust
 % Configuro el slider
 familias=unique(familia_cluster_plano(:,1),'sorted');
 maxfamilia=length(familias);
-set(handles.slider_ds,'Enable','on','Min',1,'Max',maxfamilia,'Value',1,'SliderStep',[1 1]/(maxfamilia-1));
+if maxfamilia>1 
+    set(handles.slider_ds,'Enable','on','Min',1,'Max',maxfamilia,'Value',1,'SliderStep',[1 1]/(maxfamilia-1));
+else
+    set(handles.slider_ds,'Enable','off');
+end
 % pongo los clusters en la tabla
 set(handles.uitable_familiaclusterplano,'Visible','on','Data',familia_cluster_plano);
 % guardamos en las handles estas variables

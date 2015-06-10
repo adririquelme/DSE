@@ -1124,6 +1124,9 @@ try
     [~,nombrearchivo,~] = fileparts(filename);
     handles.data.filename = nombrearchivo;
     P=load(strcat(pathname, filename));
+    % limpio y me quedo sólo con las coordenadas, las tres primeras
+    % columnas
+    P=P(:,1:3);
     handles.data.P = P;
     % activamos el botón de scatter para ver qué ha cargado
     set(handles.pushbutton_scatterpoints,'Enable','on');
