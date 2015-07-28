@@ -59,18 +59,7 @@ else
 end
 
 % guardamos en un archivo cilindro.txt
-%     fi = fopen('cilindro.txt', 'w') ;
-%     [n,p]=size(P);
-%     for k=1:n
-%         fprintf(fi,  '%f %f	%f \n', P(k,1),P(k,2),P(k,3)); 
-%     end 
-%     fclose(fi);
-        fi = fopen('puntos.txt', 'w') ;
-    [n,p]=size(P);
-    for k=1:n
-        fprintf(fi,  '%f %f	%f \n', P(k,1),P(k,2),P(k,3)); 
-    end 
-    fclose(fi);
+dlmwrite('cilindro_XYZ.txt',P, 'delimiter', '\t');
 
 end
 
