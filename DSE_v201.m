@@ -2382,8 +2382,8 @@ function menu_normalspacing_Callback(hObject, eventdata, handles)
 % hObject    handle to menu_normalspacing (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% gui_normalspacing;
-msgbox('Proximatelly');
+gui_normalspacing;
+% msgbox('Proximatelly');
 
 
 % --------------------------------------------------------------------
