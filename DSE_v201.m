@@ -2008,8 +2008,7 @@ try
     XYZ_RGB(:,7)=puntos_ppalasignados(:,4); % le pongo también las familias para que el escalar las pueda representar
     % exportar nube de puntos
     pathname = handles.data.pathname;
-    dlmwrite([pathname, 'XYZ-RGB-JS.txt'],XYZ_RGB, 'delimiter', '\t','precision', 32);
-    % dlmwrite([pathname, 'XYZ-RGB-JS.txt'],XYZ_RGB, 'delimiter', '\t');
+    dlmwrite([pathname, 'XYZ-RGB-JS.txt'],XYZ_RGB, 'delimiter', '\t','precision', 16);
     set(handles.text_status,'String','Waiting orders ...');
 catch error
     errordlg(['Error: ' error.identifier]);
@@ -2064,9 +2063,10 @@ end
 function pushbutton_save_txt_all_Callback(hObject, eventdata, handles)
 try
     tic;
+    % familia=str2num(get(handles.text_family,'String')); cluster=str2num(get(handles.text_cluster,'String'));
     set(handles.text_status,'String','Saving the text file ...');
     % val=handles.saveoutput.val;
-    % Primero verifico si existe el pathname
+    % verifico si existe el pathname
     if isfield(handles.data,'pathname') & handles.data.pathname ~= 0
         pathname = handles.data.pathname;
     else
@@ -2078,21 +2078,12 @@ try
     else
         filename = 'Output';
     end
-    
-    % Genero la salida para analizar los polos en otro software
-    polos_estereo_cartesianas=handles.data.polos_estereo_cartesianas;
-    [ dipdir, dip ] = f_cart2clar( polos_estereo_cartesianas(:,1),polos_estereo_cartesianas(:,2) );
-    [np,~]=size(dip);
-    polos = zeros(np,2);
-    polos(:,1)=dipdir;
-    polos(:,2)=dip;
-    dlmwrite([pathname,filename,' Poles_Dipdir-Dip.txt'],polos, 'delimiter', '\t');
-    
-    % Guardo las todas las coordenadas y el rgb según la familia que le toque
+    %  pathname = handles.data.pathname;
+    %guardamos las todas las coordenadas y el rgb según la familia que le toque
     [np,~]=size(handles.data.puntos_familia_cluster);
     A=handles.data.puntos_familia_cluster(:,1:4);
     % guardamos un archivo para el polyworks
-    XYZ_RGB_DS=zeros(np,7);
+    XYZ_RGB=zeros(np,7);
     XYZ_RGB=A(:,1:3);
     XYZ_RGB(:,7)=A(:,4);
     im=A(:,4); %guardamos las familias
@@ -2118,7 +2109,6 @@ try
     
     % Para cada familia, guardamos sus coordenadas aisladas con
     % un color rgb por cluster desordenado!!!!
-    % PFC: puntos - familia - cluster
     
     PFC=handles.data.puntos_familia_cluster; % cargamos la matriz calculada
     Ifamilias=unique(PFC(:,4),'sorted'); % índices de las familias
@@ -2126,17 +2116,14 @@ try
     cluster=0;
     for i=1:nf
         familia=Ifamilias(i);
+        % A=PFC(find(PFC(:,4)==familia),:); %puntos que pertenecen a la familia seleccionada
         A=PFC(PFC(:,4)==familia,:); %puntos que pertenecen a la familia seleccionada
-        [np,~]=size(A); % número de puntos encontrados
-        XYZ_RGB=zeros(np,7);
-        XYZ_RGB=A(:,1:3); % le paso las coordenadas de los puntos
-        XYZ_RGB(:,7)=A(:,5); % le paso los ids del cluster
-        
-        % Preparo el color de cada cluster para verlo desordenado
-        im=A(:,5); %guardamos los ids de los clusters
-        % variable para ordenar o desordenar los colores de los clusters
-        colorordenado = 1; 
-        % 0 ordenado, 1 desordenado
+        % guardamos el archivo para poder abrirlo en polyworks
+        [np,~]=size(A);
+        XYZ_RGB=zeros(np,6);
+        XYZ_RGB=A(:,1:3);
+        im=A(:,5); %guardamos los clusters
+        colorordenado = 0;
         if colorordenado == 1
             [ rgb ] = f_randomrgb( im );
         else
@@ -2159,7 +2146,7 @@ try
     end
     set(handles.text_status,'String','Waiting orders ...');
     
-    % Guardamos las coordenadas, familia y clúster
+    %guardamos las coordenadas, familia y clúster
     A=handles.data.puntos_familia_cluster;
     dlmwrite([pathname,filename, ' XYZ-js-c.txt'],A, 'delimiter', '\t', 'precision', 16);
     set(handles.text_status,'String','Waiting orders ...');
@@ -2196,9 +2183,6 @@ try
     % genero la salida Dipdir_Dip_Density
     planos_pples=handles.data.planos_pples;
     dlmwrite([pathname,filename,' Dipdir-Dip-Density.txt'],planos_pples, 'delimiter', '\t');
-    
-
-    
     
     tiempoempleado=floor(toc);
 
@@ -2398,8 +2382,8 @@ function menu_normalspacing_Callback(hObject, eventdata, handles)
 % hObject    handle to menu_normalspacing (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-gui_normalspacing;
-% msgbox('Proximatelly');
+% gui_normalspacing;
+msgbox('Proximatelly');
 
 
 % --------------------------------------------------------------------
