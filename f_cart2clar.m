@@ -21,24 +21,25 @@ function [ dipdir, dip ] = f_cart2clar( x,y )
 %    This is free software, and you are welcome to redistribute it
 %    under certain conditions.
 
-if x>=0
-    if y>=0
-        alpha = atan(y/x);
-    else
-        alpha = 2*pi+atan(y/x);
-    end
-else
-    if y>=0
-        alpha = pi+atan(y/x);
-    else
-        alpha = pi+atan(y/x);
-    end
-end
-beta = 2*atan((x^2+y^2)^0.5);
-if x==0 && y==0
-    alpha=0;
-    beta=0;
-end
+
+% Inicio alpha y beta
+alpha=zeros(size(x));
+beta = alpha;
+
+
+I1=find(x>=0 & y>=0);
+alpha(I1)=atan(y(I1)./x(I1));
+I2=find(x>=0 & y<0);
+alpha(I2)=2*pi+atan(y(I2)./x(I2));
+I3=find(x<0 & y>=0);
+alpha(I3)=pi+atan(y(I3)./x(I3));
+I4=find(x<0 & y<0);
+alpha(I4)=pi+atan(y(I4)./x(I4));
+beta = 2*atan((x.^2+y.^2).^0.5);
+I5=find(x==0 & y==0);
+alpha(I5)=0;
+beta(I5)=0;
+
 omegapolo=a2o(alpha);
 omegaplano=wpole2wplane(omegapolo)*180/pi;
 dipdir=omegaplano;

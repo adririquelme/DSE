@@ -338,7 +338,7 @@ function pushbutton_start_Callback(hObject, eventdata, handles)
 %%% Este está inhabilitado!!!!!!
 set(handles.uipanel1,'Visible','on');
 % mostramos los planos principales en la tabla
-ppal_poles=handles.ppal_poles;;
+ppal_poles=handles.ppal_poles;
 set(handles.uitable_ppalpoles,'Enable','on','Data',ppal_poles);
 % calculo el número de polos principales y los guardo en las handles
 [nppalpoles,~]=size(ppal_poles);
