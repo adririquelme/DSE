@@ -18,17 +18,17 @@ function varargout = DSE_v201(varargin)
 %    Discontinuity Set Extractor comes with ABSOLUTELY NO WARRANTY.
 %    This is free software, and you are welcome to redistribute it
 %    under certain conditions.
-% DSE_V06 MATLAB code for DSE_v06.fig
-%      DSE_V06, by itself, creates a new DSE_V06 or raises the existing
+% DSE_v201 MATLAB code for DSE_v201.fig
+%      DSE_v201, by itself, creates a new DSE_v201 or raises the existing
 %      singleton*.
 %
-%      H = DSE_V06 returns the handle to a new DSE_V06 or the handle to
+%      H = DSE_v201 returns the handle to a new DSE_v201 or the handle to
 %      the existing singleton*.
 %
-%      DSE_V06('CALLBACK',hObject,eventData,handles,...) calls the local
+%      DSE_v201('CALLBACK',hObject,eventData,handles,...) calls the local
 %      function named CALLBACK in DSE_V06.M with the given input arguments.
 %
-%      DSE_V06('Property','Value',...) creates a new DSE_V06 or raises the
+%      DSE_v201('Property','Value',...) creates a new DSE_V06 or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
 %      applied to the GUI before DSE_v06_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
@@ -39,7 +39,7 @@ function varargout = DSE_v201(varargin)
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help DSE_v06
+% Edit the above text to modify the response to help DSE_v201
 
 % Last Modified by GUIDE v2.5 18-Apr-2015 17:50:49
 
@@ -267,7 +267,7 @@ function pushbutton_4ppalpolesassignment_Callback(hObject, ~, handles)
 % Asignación de polos principales a los puntos
 tic
 set(handles.text_status,'String','Assigning the principal planes to the points ...')
-cone=str2num(get(handles.box_cone,'String'));
+cone=str2double(get(handles.box_cone,'String'));
 cone=cone/180*pi;
 polos_estereo_cartesianas=handles.data.polos_estereo_cartesianas;
 polos_pples_cart=handles.data.polos_pples_cart;
@@ -326,8 +326,8 @@ ppcluster=0;
 handles.data.ppcluster=ppcluster;
 puntos_ppalasignados=handles.data.puntos_ppalasignados;
 planos_pples=handles.data.planos_pples;
-vnfamilia=get(handles.checkbox_vnfamilia,'Value');
-ksigmas=str2double(get(handles.box_ksigmas,'String'));
+vnfamilia=get(handles.checkbox_vnfamilia,'Value'); handles.data.vnfamilia = vnfamilia;
+ksigmas=str2double(get(handles.box_ksigmas,'String')); handles.data.ksigmas = ksigmas;
 [ puntos_familia_cluster_fullclusters, familia_cluster_plano_fullclusters ] = f_ppal2cluster_v07( puntos_ppalasignados, planos_pples, ppcluster,vnfamilia,ksigmas); 
 % Guardamos en las handles la clasificación con todos los clusters
 % la salida es con todos los clusters sin filtrar, luego los guardamos en
@@ -1630,6 +1630,29 @@ else
     set(dcm,'updatefcn',@myfunction)
 
 end
+
+% Primero verifico si existe el pathname
+if isfield(handles.data,'pathname') & handles.data.pathname ~= 0
+    % Si existe lo pongo
+    pathname = handles.data.pathname;
+else
+    % Si no existe tomo en el que está
+    pathname = [pwd,'\'];
+end
+if isfield(handles.data,'filename') & handles.data.filename ~= 0
+    filename = handles.data.filename;
+    [~,filename,~] = fileparts(filename);
+else
+    filename = 'Output';
+end
+
+% Guardo la imagen
+name_png = [pathname,'Density - ', filename,'.png'];
+name_pdf = [pathname,'Density - ', filename,'.pdf'];
+% export_fig(name, '-m2.5', '-transparent');
+saveas(gcf, name_png);
+saveas(gcf, name_pdf);
+
 set(handles.text_status,'String','Waiting orders ...');  
 
 
@@ -1980,15 +2003,34 @@ function pushbutton_save_txtfam_Callback(hObject, eventdata, handles)
 % Genera la salida tras asignar los polos a los puntos, sin el análisis
 % cluster
 try
-    set(handles.text_status,'String','Saving the text file ...');[np,~]=size(handles.data.polos_estereo_cartesianas);
+
+    set(handles.text_status,'String','Saving the text file ...');
+    % [np,~]=size(handles.data.polos_estereo_cartesianas);
+    
+    % Primero verifico si existe el pathname
+    if isfield(handles.data,'pathname') & handles.data.pathname ~= 0
+        % Si existe lo pongo
+        pathname = handles.data.pathname;
+    else
+        % Si no existe tomo en el que está
+        pathname = [pwd,'\'];
+    end
+    if isfield(handles.data,'filename') & handles.data.filename ~= 0
+        filename = handles.data.filename;
+        [~,filename,~] = fileparts(filename);
+    else
+        filename = 'Output';
+    end
+    
     puntos_ppalasignados=handles.data.puntos_ppalasignados;
+    
     % comprobamos si hay alguna familia asignada
     if max(puntos_ppalasignados(:,4))>0
         I=find(puntos_ppalasignados(:,4)>0);
         puntos_ppalasignados=puntos_ppalasignados(I,:);
     end
     % guardamos un archivo para el polyworks
-    XYZ_RGB=zeros(np,7);
+    % XYZ_RGB=zeros(np,7);
     XYZ_RGB=puntos_ppalasignados(:,1:3);
     im=puntos_ppalasignados(:,4); %guardamos las familias
     % transforma escala de intensidades (0 a n) a RGB (0 a 1)  from http://www.alecjacobson.com/weblog/?p=1655
@@ -2007,8 +2049,8 @@ try
     XYZ_RGB(:,6)=reshape(B,[],1);
     XYZ_RGB(:,7)=puntos_ppalasignados(:,4); % le pongo también las familias para que el escalar las pueda representar
     % exportar nube de puntos
-    pathname = handles.data.pathname;
-    dlmwrite([pathname, 'XYZ-RGB-JS.txt'],XYZ_RGB, 'delimiter', '\t','precision', 16);
+    % pathname = handles.data.pathname;
+    dlmwrite([pathname, filename, ' XYZ-RGB-JS-previous.txt'],XYZ_RGB, 'delimiter', '\t','precision', 16);
     set(handles.text_status,'String','Waiting orders ...');
 catch error
     errordlg(['Error: ' error.identifier]);
@@ -2063,15 +2105,14 @@ end
 function pushbutton_save_txt_all_Callback(hObject, eventdata, handles)
 try
     tic;
-    % familia=str2num(get(handles.text_family,'String')); cluster=str2num(get(handles.text_cluster,'String'));
+
     set(handles.text_status,'String','Saving the text file ...');
-    % val=handles.saveoutput.val;
     % Primero verifico si existe el pathname
     if isfield(handles.data,'pathname') & handles.data.pathname ~= 0
         % Si existe lo pongo
         pathname = handles.data.pathname;
     else
-        % Si no existe pillo el que tiene
+        % Si no existe tomo en el que está
         pathname = [pwd,'\'];
     end
     if isfield(handles.data,'filename') & handles.data.filename ~= 0
@@ -2092,10 +2133,10 @@ try
     dlmwrite([pathname,filename,' Poles_Dipdir-Dip.txt'],polos, 'delimiter', '\t');
     
     % Guardamos las todas las coordenadas y el rgb según la familia que le toque
-    [np,~]=size(handles.data.puntos_familia_cluster);
+    % [np,~]=size(handles.data.puntos_familia_cluster);
     A=handles.data.puntos_familia_cluster(:,1:4);
     % guardamos un archivo para el polyworks
-    XYZ_RGB=zeros(np,7);
+    % XYZ_RGB=zeros(np,7); % la quito porque recomiendan no generarla antes
     XYZ_RGB=A(:,1:3);
     XYZ_RGB(:,7)=A(:,4);
     im=A(:,4); %guardamos las familias
@@ -2131,12 +2172,12 @@ try
         % A=PFC(find(PFC(:,4)==familia),:); %puntos que pertenecen a la familia seleccionada
         A=PFC(PFC(:,4)==familia,:); %puntos que pertenecen a la familia seleccionada
         % Guardamos el archivo para poder abrirlo en polyworks
-        [np,~]=size(A);
-        XYZ_RGB=zeros(np,7);
+        % [np,~]=size(A);
+        % XYZ_RGB=zeros(np,7);
         XYZ_RGB=A(:,1:3); % le paso las coordenadas de los puntos
         XYZ_RGB(:,7)=A(:,5); % le paso los ids del cluster
         im=A(:,5); %guardamos los clusters
-        colorordenado = 0; % variable para ordenar o desordenar los colores de los clusters en RGB
+        colorordenado = 1; % variable para ordenar o desordenar los colores de los clusters en RGB
         % 0 ordenado, 1 desordenado
         if colorordenado == 1
             [ rgb ] = f_randomrgb( im );
@@ -2212,6 +2253,27 @@ try
     N = N+1;
     set(handles.listbox_log, 'ListboxTop', N); % vista de la última línea
     handles.data.log = S;
+    
+     % Y ya puestos, guardo el log en un log.txt
+     f = fopen([pathname,filename,' - log.txt'], 'wt');
+     [n,~]=size(S);
+     for i=1:n
+        fprintf(f, '%s \n', S(i,:));
+     end
+     fclose(f);
+    
+     % Finalmente, se genera un reporte con los datos
+     [npoints,~]=size(handles.data.P);
+     knn = handles.data.npb;
+     tolerancia = handles.data.tolerancia;
+     nsec = handles.data.nsec;
+     angulovpples = handles.data.angulovpples;
+     cone = handles.data.cone;
+     vnfamilia = handles.data.vnfamilia;
+     ksigmas = handles.data.ksigmas;
+     nfamilias = nf; % calculada al principio de este callback
+     [ ~] = f_report( pathname, filename, npoints, knn, tolerancia, nsec, angulovpples, cone, vnfamilia, ksigmas, nfamilias, planos_pples, handles.data.familia_cluster_plano);
+    
     set(handles.text_status,'String','Waiting orders ...');
 catch error
     errordlg(['Error: ' error.identifier]);
@@ -2276,18 +2338,24 @@ function pushbutton_31editppalpoles_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 % Edición manual de los polos principales
 tic;
-set(handles.text_status,'String','Editing the principal poles ...');  
+set(handles.text_status,'String','Editing the principal poles ...'); 
+% Preparo las variables necesarias para pasarlas al global y de ahí a la
+% nueva ventana
 planos_pples=handles.data.planos_pples;
 polos_pples_cart=handles.data.polos_pples_cart;
 X=handles.data.X;
 Y=handles.data.Y;
 density=handles.data.density;
+polos_estereo_cartesianas=handles.data.polos_estereo_cartesianas; 
+P = handles.data.P;
 setappdata(0,'global_ppal_poles',planos_pples);
 setappdata(0,'global_polos_pples_cart',polos_pples_cart);
 setappdata(0,'global_X',X);
 setappdata(0,'global_Y',Y);
 setappdata(0,'global_density',density);
-h = gui_ppalpoleseditor_v03;
+setappdata(0,'polos_estereo_cartesianas',polos_estereo_cartesianas);
+setappdata(0,'P',P);
+h = gui_ppalpoleseditor_v04;
 waitfor(h);
 planos_pples=getappdata(0,'global_ppal_poles');
 % guardamos la edición en las handles
