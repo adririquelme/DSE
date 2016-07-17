@@ -52,7 +52,7 @@ function [ optimalbandwidth, Smean] = f_spacing_analysis_v11( Base, js, bandwidt
 
  
 % Configuración
-espaciadominimo=0.01; %establecemos un valor de espaciado mínimo
+espaciadominimo=0.01; % establecemos un valor de espaciado mínimo
 knnfast=1; % 1 no se reduce nada, 0 si reducimos los puntos un 90% 
 
 % iniciamos la barra de avance
@@ -253,7 +253,7 @@ if ncs > 1 && max(D)~=min(D)
     plot(xgrid, fdensidad, 'b--', xgrid2D, fdensidad2D, 'g-');
     xlabel('Spacing'); 
     ylabel('Density function'); 
-    title(['Spacings. J_',num2str(ii),'. Bdw: (1) = ',num2str(ancho),'; (2) = ',num2str(ancho2D),'; ',num2str(nclusters),' clusters']);
+    title(['Spacings. J_',num2str(ii),'. S: (1) = ',num2str(Smean),'; (2) = ',num2str(Smean2D),'; ',num2str(nclusters),' clusters']);
     % title(['Spacings. J_',num2str(ii),'. Bandwidth: 3D = ',num2str(ancho),'; 2D = ',num2str(ancho2D),'; ',num2str(nclusters),' clusters',char(10),'3D -- Min=',num2str(Smin),'; Max=',num2str(Smax),'; Max dens=',num2str(Smaxdensity),'; Mode=',num2str(Smode),'; Mean=',num2str(Smean),char(10),'2D -- Min=',num2str(Smin2D),'; Max=',num2str(Smax2D),'; Max dens=',num2str(Smaxdensity2D),'; Mode=',num2str(Smode2D),'; Mean=',num2str(Smean2D)]);
     legend('(1) Non-persistent','(2) Full persistent');
 

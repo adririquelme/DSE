@@ -15,7 +15,7 @@ function txt = myupdatefcn(empt,event_obj)
 %    You should have received a copy of the GNU General Public License along
 %   with this program; if not, write to the Free Software Foundation, Inc.,
 %   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-%    Discontinuity Set Extractor, Copyright (C) 2015 Adrián Riquelme Guill
+%    Discontinuity Set Extractor, Copyright (C) 2015 Adrian Riquelme Guill
 %    Discontinuity Set Extractor comes with ABSOLUTELY NO WARRANTY.
 %    This is free software, and you are welcome to redistribute it
 %    under certain conditions.
@@ -24,4 +24,5 @@ function txt = myupdatefcn(empt,event_obj)
 pos = get(event_obj,'Position');
 x = pos(1); y=pos(2);
 [ dipdir, dip ] = f_cart2clar( x,y );
-txt = {['Time: ',num2str(dipdir)], 'Amplitude: ',num2str(dip)]};
+% txt = {['Time: ',num2str(dipdir)], 'Amplitude: ',num2str(dip)]};
+txt = ['Time: ',num2str(dipdir), 'Amplitude: ',num2str(dip)];
