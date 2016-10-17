@@ -109,7 +109,7 @@ for j=1:np
     % columnas es de npb, cuando un punto no es cercano, rellena con ceros.
     V=find(idx(j,:)>0); %index of the near points
     test_tin=P(idx(j,V),1:3); %points to test coplanarity
-    [pc, ~, valor_propio] = PCA(test_tin,'econ'); %Cambio a PCA por compatibilidad
+    [pc, ~, valor_propio] = pca(test_tin); %Cambio a PCA por compatibilidad
     %[pc, ~, valor_propio] = princomp (test_tin,'econ');
     [n,~]=size(valor_propio);
     if n==3
@@ -129,8 +129,9 @@ for j=1:np
     if copl == 1
         % como es coplanar, paso el punto y su calidad
         P2(np2,:)=P(j,:); % guardamos el punto en P2
-        vn=cross(pc(:,1),pc(:,2));% vector normal
-        planos(np2,:)=vn;
+        % vn=cross(pc(:,1),pc(:,2));% vector normal
+        % planos(np2,:)=vn;
+        planos(np2,:) = pc(:,3); % tomo el tercer vector propio
         calidad_tin(np2,1)=length(V);
         np2=np2+1; % incrementamos el contador de coplanares
     end

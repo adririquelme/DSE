@@ -1,4 +1,4 @@
-function varargout = DSE_v204(varargin)
+function varargout = DSE_v205(varargin)
 %    Copyright (C) {2015}  {Adrián Riquelme Guill, adririquelme@gmail.com}
 %
 %    This program is free software; you can redistribute it and/or modify
@@ -18,17 +18,17 @@ function varargout = DSE_v204(varargin)
 %    Discontinuity Set Extractor comes with ABSOLUTELY NO WARRANTY.
 %    This is free software, and you are welcome to redistribute it
 %    under certain conditions.
-% DSE_v204 MATLAB code for DSE_v204.fig
-%      DSE_v204, by itself, creates a new DSE_v204 or raises the existing
+% DSE_v205 MATLAB code for DSE_v205.fig
+%      DSE_v205, by itself, creates a new DSE_v205 or raises the existing
 %      singleton*.
 %
-%      H = DSE_v204 returns the handle to a new DSE_v204 or the handle to
+%      H = DSE_v205 returns the handle to a new DSE_v205 or the handle to
 %      the existing singleton*.
 %
-%      DSE_v204('CALLBACK',hObject,eventData,handles,...) calls the local
+%      DSE_v205('CALLBACK',hObject,eventData,handles,...) calls the local
 %      function named CALLBACK in DSE_V06.M with the given input arguments.
 %
-%      DSE_v204('Property','Value',...) creates a new DSE_V06 or raises the
+%      DSE_v205('Property','Value',...) creates a new DSE_V06 or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
 %      applied to the GUI before DSE_v06_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
@@ -39,9 +39,9 @@ function varargout = DSE_v204(varargin)
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help DSE_v204
+% Edit the above text to modify the response to help DSE_v205
 
-% Last Modified by GUIDE v2.5 18-Jul-2016 16:46:54
+% Last Modified by GUIDE v2.5 08-Sep-2016 20:53:38
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -71,7 +71,7 @@ function DSE_v06_OpeningFcn(hObject, ~, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to DSE_v06 (see VARARGIN)
 
-% Choose default command line output for DSE_v204
+% Choose default command line output for DSE_v205
 handles.output = hObject;
     % A = imread('img/salir','bmp');
     % set(handles.pushbutton_exit,'cdata',A);
@@ -111,29 +111,37 @@ function pushbutton_1loadP_Callback(hObject, ~, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-handles.data.P = load ('puntos.txt');
-handles.data.filename='Points';
-% activamos el botón de scatter para ver que ha cargado
-set(handles.pushbutton_scatterpoints,'Enable','on');
-% activamola preparación de planos
-set(handles.pushbutton_2setupplanes,'Enable','on');set(handles.pushbutton_2preparaTIN_fast,'Enable','on');
-set(handles.text_ncercanos,'Enable','on');
-set(handles.text_tolerancia,'Enable','on');
-set(handles.box_nneighbours,'Enable','on');
-set(handles.box_tolerancia,'Enable','on');
-% activamos el salvado de la base de datos
-set(handles.menu_saveddbb,'Enable','on');
-% activamos el botón de representar de nuevo
-set(handles.pushbutton_plot3dpoints,'Enable','on');
-set(handles.text_status,'String','Waiting orders ...');
-% guardo la información en el log
-a = get(handles.listbox_log,'String');
-t= now;
-DateString = datestr(t);
-S2 = [DateString, ' - Loaded the pointcloud from puntos.txt'];
-S = strvcat(a,S2)  ;
-set(handles.listbox_log,'String',S);
-handles.data.log = S;
+if exist('puntos.txt', 'file')
+    handles.data.P = load ('puntos.txt');
+    handles.data.filename='Points';
+    % activamos el botón de scatter para ver que ha cargado
+    set(handles.pushbutton_scatterpoints,'Enable','on');
+    % activamola preparación de planos
+    set(handles.pushbutton_2setupplanes,'Enable','on');set(handles.pushbutton_2preparaTIN_fast,'Enable','on');
+    set(handles.text_ncercanos,'Enable','on');
+    set(handles.text_tolerancia,'Enable','on');
+    set(handles.box_nneighbours,'Enable','on');
+    set(handles.box_tolerancia,'Enable','on');
+    % activamos el salvado de la base de datos
+    set(handles.menu_saveddbb,'Enable','on');
+    % activamos el botón de representar de nuevo
+    set(handles.pushbutton_plot3dpoints,'Enable','on');
+    set(handles.text_status,'String','Waiting orders ...');
+    % guardo la información en el log
+    a = get(handles.listbox_log,'String');
+    t= now;
+    DateString = datestr(t);
+    S2 = [DateString, ' - Loaded the pointcloud from puntos.txt'];
+    S = strvcat(a,S2)  ;
+    set(handles.listbox_log,'String',S);
+    handles.data.log = S;
+else
+  % File does not exist.
+  warningMessage = sprintf('Warning: file puntos.txt does not exist');
+  uiwait(msgbox(warningMessage));
+end
+
+
 
 guidata(hObject,handles)
 
@@ -152,7 +160,7 @@ handles.data.npb=npb;
 handles.data.tolerancia=tolerancia;
 % preparamos los planos
     set(handles.text_status,'String','Setting up the planes ...');
-    [P, calidad_tin, planos]=f_setup_planes_v06(P, npb, tolerancia); % el número de puntos se habrá reducido por el análisis
+    [P, calidad_tin, planos]=f_setup_planes_v07(P, npb, tolerancia); % el número de puntos se habrá reducido por el análisis
     % establecemos el número de puntos en la pantalla
     [npuntos,~]=size(P);
     set(handles.text_npuntos,'Visible','on','String',npuntos);
@@ -1133,6 +1141,11 @@ try
     [~,nombrearchivo,~] = fileparts(filename);
     handles.data.filename = nombrearchivo;
     P=load(strcat(pathname, filename));
+    % Por si acaso, guardo las columnas de la 4 al final
+    [~,ncolumnas]=size(P);
+    if ncolumnas >=4
+        handles.data.P_extradata=P(:,ncolumnas:4);
+    end
     % limpio y me quedo sólo con las coordenadas, las tres primeras
     % columnas
     P=P(:,1:3);
@@ -1202,8 +1215,8 @@ handles.aux=aux;
 npuntos=handles.aux.npuntos;
 planos_pples=handles.aux.planos_pples;
 familia_cluster_plano=handles.aux.familia_cluster_plano;
-slider_cluster=handles.aux.slider_cluster;
-slider_familiy=handles.aux.slider_familiy;
+%slider_cluster=handles.aux.slider_cluster;
+%slider_familiy=handles.aux.slider_familiy;
 phase1=handles.gui.phase1;
 phase2=handles.gui.phase2;
 phase3=handles.gui.phase3;
@@ -1252,16 +1265,16 @@ set(handles.text34,'Enable',phase5);
 set(handles.checkbox_vnfamilia,'Enable',phase5);
 set(handles.box_ksigmas,'Enable',phase5);
 
-set(handles.text_lab_family,'Enable',phase5);
-set(handles.text_family,'Enable',phase5);
-set(handles.slider_family,'Enable',phase5);
-set(handles.text_lab_cluster,'Enable',phase5);
-set(handles.text_cluster,'Enable',phase5);
-set(handles.slider_cluster,'Enable',phase5);
+%set(handles.text_lab_family,'Enable',phase5);
+%set(handles.text_family,'Enable',phase5);
+%set(handles.slider_family,'Enable',phase5);
+%set(handles.text_lab_cluster,'Enable',phase5);
+%set(handles.text_cluster,'Enable',phase5);
+%set(handles.slider_cluster,'Enable',phase5);
 set(handles.uitable_familiaclusterplano,'Visible',phase5,'Enable',phase5);
-set(handles.pushbutton_save_txt_output,'Enable',phase5);
+% set(handles.pushbutton_save_txt_output,'Enable',phase5); Old button
 set(handles.pushbutton_save_txt_all,'Enable',phase5);
-set(handles.popupmenu_save_output,'Enable',phase5);
+% set(handles.popupmenu_save_output,'Enable',phase5);
 % guardamos los valores de los boxes
 set(handles.box_nneighbours,'String',handles.data.npb);
 set(handles.box_tolerancia,'String',handles.data.tolerancia);
@@ -1273,8 +1286,9 @@ set(handles.box_cone,'String',handles.data.cone);
 % establecemos algunos handles
 set(handles.uitable_principalplanes,'Data',planos_pples);
 set(handles.uitable_familiaclusterplano,'Data',familia_cluster_plano);
-set(handles.slider_cluster,'Enable',slider_cluster.Enable,'Min',slider_cluster.Min, 'Max',slider_cluster.Max, 'Value',slider_cluster.Value, 'SliderStep',slider_cluster.SliderStep);
-set(handles.slider_family,'Enable',slider_familiy.Enable,'Min',slider_familiy.Min, 'Max',slider_familiy.Max, 'Value',slider_familiy.Value, 'SliderStep',slider_familiy.SliderStep);
+% The sliders of family and cluster have been disabled
+%set(handles.slider_cluster,'Enable',slider_cluster.Enable,'Min',slider_cluster.Min, 'Max',slider_cluster.Max, 'Value',slider_cluster.Value, 'SliderStep',slider_cluster.SliderStep);
+%set(handles.slider_family,'Enable',slider_familiy.Enable,'Min',slider_familiy.Min, 'Max',slider_familiy.Max, 'Value',slider_familiy.Value, 'SliderStep',slider_familiy.SliderStep);
 % activamos el salvado de la base de datos
 set(handles.menu_saveddbb,'Enable','on');
 
@@ -1332,8 +1346,8 @@ handles.gui.phase5=get(handles.pushbutton_5clusteranalysis,'Enable');
 handles.aux.npuntos=get(handles.text_npuntos,'String');
 handles.aux.planos_pples=get(handles.uitable_principalplanes,'Data');
 handles.aux.familia_cluster_plano=get(handles.uitable_familiaclusterplano,'Data');
-handles.aux.slider_cluster=get(handles.slider_cluster);
-handles.aux.slider_familiy=get(handles.slider_family);
+%handles.aux.slider_cluster=get(handles.slider_cluster);
+%handles.aux.slider_familiy=get(handles.slider_family);
 handles.aux.text_npuntos = handles.text_npuntos;
 % guardamos los valores de los boxes
 handles.data.npb=get(handles.box_nneighbours,'String');
@@ -1458,20 +1472,20 @@ set(handles.box_maxpples,'Enable','off');
 set(handles.pushbutton_5clusteranalysis,'Enable','off');
 set(handles.pushbutton_51clustereditor,'Enable','off');
 set(handles.pushbutton_52restartclusters,'Enable','off');
-set(handles.text_lab_family,'Enable','off');
-set(handles.text_lab_cluster,'Enable','off');
-set(handles.text_family,'Enable','off');
-set(handles.text_cluster,'Enable','off');
-set(handles.slider_cluster,'Enable','off');
+%set(handles.text_lab_family,'Enable','off');
+%set(handles.text_lab_cluster,'Enable','off');
+%set(handles.text_family,'Enable','off');
+%set(handles.text_cluster,'Enable','off');
+%set(handles.slider_cluster,'Enable','off');
 set(handles.text33,'Enable','off');
 set(handles.text34,'Enable','off');
 set(handles.checkbox_vnfamilia,'Enable','off');
 set(handles.box_ksigmas,'Enable','off');
 set(handles.uitable_familiaclusterplano,'Enable','off');
-set(handles.pushbutton_save_txt_output,'Enable','off');
+% set(handles.pushbutton_save_txt_output,'Enable','off');
 set(handles.pushbutton_save_txt_all,'Enable','off');
 set(handles.pushbutton_save_txtfam,'Enable','off');
-set(handles.popupmenu_save_output,'Enable','off');
+% set(handles.popupmenu_save_output,'Enable','off');
 % limpiamos las figuras
 cla(handles.axes_11,'reset')
 set(handles.text_figuretitle,'String','');
@@ -1554,7 +1568,7 @@ if popup==0
     cla(handles.axes_11,'reset');
     % dibujamos la wulff
     wulff;
-    axis(handles.axes_11,'square');
+    axis(handles.axes_11,'square','equal');
     scatter(handles.axes_11,polos_estereo_cartesianas(:,1),polos_estereo_cartesianas(:,2),calidad_tin(:,1));
     title(['Stereographic Projection, Normal Vector Poles: ',num2str(length(polos_estereo_cartesianas)),' points']);
     xlabel(handles.axes_11,'axis X'); ylabel(handles.axes_11,'axis Y');
@@ -1562,7 +1576,7 @@ else
     % dibujamos la plantilla de wulff
     h=figure; 
     wulff; set(h,'Color',[1 1 1]);
-    axis('square');
+    axis('square','equal');
     scatter(polos_estereo_cartesianas(:,1),polos_estereo_cartesianas(:,2),calidad_tin(:,1));
     title(['Stereographic Projection, Normal Vector Poles: ',num2str(length(polos_estereo_cartesianas)),' points']);
     xlabel('axis X'); ylabel('axis Y');
@@ -1616,7 +1630,7 @@ if popup==0
     end
     xlabel(handles.axes_11,'axis X'); ylabel(handles.axes_11,'axis Y');
     hold on; contour3(handles.axes_11,X,Y,density,numberisolines);
-    axis (handles.axes_11,[-1 1 -1 1]); axis(handles.axes_11,'square');
+    axis (handles.axes_11,[-1 1 -1 1]); axis(handles.axes_11,'square','equal');
     dcm = datacursormode(gcf);
     datacursormode on;
     set(dcm,'updatefcn',@myfunction)
@@ -1627,7 +1641,7 @@ else
     hold on; contour3(X,Y,density,numberisolines); % dibuja con contornos
     % hold on; surfc(X,Y,density); % dibuja contornos con sombreado
     
-    axis ([-1 1 -1 1]); axis('square');
+    axis ([-1 1 -1 1]); axis('square','equal');
 
     for ii=1:kk
        text(xa(ii),xb(ii),xc(ii), ['J_{',num2str(ii),'}'],'FontSize',18, ...
@@ -1686,7 +1700,7 @@ if popup==0
     cla(handles.axes_11,'reset');
     % dibujamos la wulff
     wulff;
-    axis(handles.axes_11,'square');
+    axis(handles.axes_11,'square','equal');
     scatter(handles.axes_11,A(:,1),A(:,2),5,A(:,3));
     title(handles.axes_11,['Stereographic Projection Assigned Principal Poles: ',num2str(length(A)),' points']);
     xlabel(handles.axes_11,'X'); ylabel(handles.axes_11,'Y');
@@ -1695,7 +1709,7 @@ else
     set(handles.text_figuretitle,'String','');
     cla(handles.axes_11,'reset');
     % dibujamos la wulff
-    wulff; set(h,'Color',[1 1 1]);axis('square');
+    wulff; set(h,'Color',[1 1 1]);axis('square','equal');
     scatter(A(:,1),A(:,2),5,A(:,3));
     title(['Stereographic Projection Assigned Principal Poles: ',num2str(length(A)),' points']);
     xlabel('X'); ylabel('Y');
@@ -1855,6 +1869,8 @@ function pushbutton_2preparaTIN_fast_Callback(hObject, eventdata, handles)
 P=handles.data.P;
 npb=str2num(get(handles.box_nneighbours,'String'));
 tolerancia=str2num(get(handles.box_tolerancia,'String'));
+handles.data.npb=npb;
+handles.data.tolerancia=tolerancia;
 % preparamos los planos
     set(handles.text_status,'String','Setting up the planes ...');
     [idx, dist, ~, calidad_tin, planos]=f_preparaTIN_v03_nocoplanartest(P, npb);
@@ -2566,4 +2582,18 @@ output_txt = {['Dip direction: ',num2str(dipdir,3),'[º]'],...
 % If there is a Z-coordinate in the position, display it as well
 if length(pos) > 2
     output_txt{end+1} = ['Density: ',num2str(pos(3),4)];
+end
+
+
+% --------------------------------------------------------------------
+function menu_savepoints_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_savepoints (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if isfield(handles.data,'P')
+	P=handles.data.P;
+	pathname = handles.data.pathname;
+	filename = handles.data.filename;
+	[~,filename,~] = fileparts(filename);
+	dlmwrite([pathname,filename,'.txt'],P, 'delimiter', '\t');
 end

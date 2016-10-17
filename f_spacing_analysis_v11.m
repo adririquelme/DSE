@@ -249,7 +249,7 @@ if ncs > 1 && max(D)~=min(D)
     Smaxdensity2D=xgrid2D(I);
 
     % represento los espaciados 3d y 2d superpuestos
-    figure('name',['Joint spacing: non and full persistence. Joint set number ',num2str(ii)]); 
+    figure('name',['Joint spacing: non and full persistence. Joint set number ',num2str(ii)],'Position', [100, 100, 400, 300]); 
     plot(xgrid, fdensidad, 'b--', xgrid2D, fdensidad2D, 'g-');
     xlabel('Spacing'); 
     ylabel('Density function'); 
@@ -288,6 +288,7 @@ if ncs > 1 && max(D)~=min(D)
     name_png = [pathname,'figure-spacings-js',num2str(js),'.png'];
     name_pdf = [pathname,'figure-spacings-js',num2str(js),'.pdf'];
     % export_fig(name, '-m2.5', '-transparent');
+    fig = gcf; fig.PaperPositionMode = 'auto'; % Para forzar a que mantenga el aspecto
     saveas(gcf, name_png);
     saveas(gcf, name_pdf);
 else
