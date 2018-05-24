@@ -170,7 +170,7 @@ planos = zeros (np, 4);
 % determinación de A B C y D como cada punto tiene n puntos cercanos y
 % coplanares, programamos con un while
 
-% h=waitbar(0,'Calculating planes. Please wait');
+h=waitbar(0,'Calculating planes. Please wait');
 for j=1:np
     I=vertices_tin(j,:);
     puntos_tin=P(I,:);
@@ -202,9 +202,8 @@ for j=1:np
         planos (j,3) = 1/C;
         planos (j,4) = -1;
     end
-    % waitbar(j/np,h);
+    waitbar(j/np,h);
 end
-
-
+close(h); %cerramos la ventana de avance
 end
     

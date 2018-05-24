@@ -1,18 +1,19 @@
-function [ puntos_familia_cluster, familia_cluster_plano ] = f_ppal2cluster_v07( puntos_ppalasignados, planos_pples, ppcluster,vnfamilia,ksigmas)
-% [ puntos_familia_cluster, familia_cluster_plano ] = f_ppal2cluster_v07( puntos_ppalasignados, planos_pples, ppcluster,vnfamilia,ksigmas)
+function [familia_cluster_plano] = f_merge_clusters_v01(ksigmas, vnfamilia, puntos_familia_cluster, familia_cluster_plano)
+% function [familia_cluster_plano] = f_merge_clusters_v01(ksigmas, vnfamilia, puntos_familia_cluster, familia_cluster_plano)
 % Function that takes the families assigned to each point and calculates
 % the clusters.
 % Each cluster is a real plane, with the same normal vector
 % Input:
-% - puntos_ppalasignados: matriz con los puntos y fam a la que pertenece
-% - planos_pples: matriz con w y b (º) del vector buzamiento
-% - vnfamilia: determina si se le asigna el vector normal del DS (1) o se
-% calcula la orientación del plano al cluster (0)
 % - ksigmas: parámetro para ver cuanto se tienen que solapar las funciones
 % de densidad de dos clusters para considerarlos alineados. Valores entre
 % 0 y 3 (o más). Normalmente 1.5
-% Output:
+% - vnfamilia: determina si se le asigna el vector normal del DS (1) o se
+% calcula la orientación del plano al cluster (0)
 % - puntos_familia_cluster: matriz con los puntos, familias y el cluster al que pertenece
+% - familia_cluster_plano: matriz que contiene qué familia, a qué cluster y
+% la ecuación del plano del clúster notación Ax+By+Cz+D=0. Es una matriz de
+% índices
+% Output:
 % - familia_cluster_plano: matriz que contiene qué familia, a qué cluster y
 % la ecuación del plano del clúster notación Ax+By+Cz+D=0. Es una matriz de
 % índices
@@ -47,95 +48,6 @@ function [ puntos_familia_cluster, familia_cluster_plano ] = f_ppal2cluster_v07(
 %    Discontinuity Set Extractor comes with ABSOLUTELY NO WARRANTY.
 %    This is free software, and you are welcome to redistribute it
 %    under certain conditions.
-
-        
-ksigmaseps = 2; % parámetro para determinar el radio de búsqueda de puntos en el DBSCAN
-% es cuántas desviaciones sobre la distancia media del 4 vecino se toma.
-
-% buscamos el número de familias que hay
-puntos_familia_cluster=puntos_ppalasignados;
-familia_cluster_plano=[];
-puntos=puntos_ppalasignados(:,1:3);
-familia=puntos_ppalasignados(:,4);
-nf=max(familia);
-
-% calculamos el radio eps para el DBSCAN
-npb=4; %número de puntos vecinos para la búsqueda de clústers
-nvecinos=npb+1;
-[n,~]=size(puntos);
-if nvecinos > n
-    nvecinos=n;
-    [~,dist]=knnsearch(puntos,puntos,'NSMethod','kdtree','distance','euclidean','k',nvecinos);
-    data=dist(:,nvecinos); %tomamos todos las distancias del 4º vecino
-else
-    [~,dist]=knnsearch(puntos,puntos,'NSMethod','kdtree','distance','euclidean','k',nvecinos);
-    if n<5
-        data=dist(:,n); %tomamos todos las distancias del último vecino
-    else
-        data=dist(:,5); %tomamos todos las distancias del 4º vecino
-    end
-end
-data=unique(data,'sorted'); %ordenamos la las distancias
-eps=mean(data)+ksigmaseps*std(data);
-
-for ii=1:nf
-    jointset=find(familia==ii); %índices de los puntos que pertenecen a la fam ii
-    % puntos(I,:); % coordenadas de los puntos de la familia ii
-    % el número de cercanos lo fijamos en 4 por publicación del DBSCAN
-    puntos_familia_cluster(jointset,5)=f_dbscan(puntos(jointset,:),eps, ppcluster);
-    [nc,~]=max(puntos_familia_cluster(jointset,5)); % nc número de clústers para la familia ii
-    % con las familias y los cluster, calculamos la ecuación del plano de
-    % cada cluster, notación Ax+By+Cz+D=0, y o metemos en
-    % familia_cluster_plano
-    h=waitbar(0,['Calculating JS # ',num2str(ii),' cluster equations. Please wait']);
-    for jj=1:nc
-        jointset=find(puntos_familia_cluster(:,4)==ii & puntos_familia_cluster(:,5)==jj);
-        M=puntos_familia_cluster(jointset,1:3); % matriz que tiene los puntos le la familia ii y cluster jj
-        if vnfamilia==0
-            % calculamos el vector normal ajustándolo al clúster
-            [pc, ~, ~ ] = princomp (M,'econ');
-            vn=cross(pc(:,1),pc(:,2));% vector normal
-            vn=vn/norm(vn); %vector normal normalizado, |vn|=1
-            A=vn(1);
-            B=vn(2);
-            C=vn(3);
-        else
-            % utilizamos el vn calculado para toda la familia
-            omega=planos_pples(ii,1)/180*pi;
-            beta=planos_pples(ii,2)/180*pi;
-            [ A,B,C ] = f_vbuz2vnor( omega,beta );
-        end
-        sx=sum(puntos_familia_cluster(jointset,1));
-        sy=sum(puntos_familia_cluster(jointset,2));
-        sz=sum(puntos_familia_cluster(jointset,3));
-        [np,~]=size(jointset);
-        if C~=0
-            a1=-A/C;
-            a2=-B/C;
-            a0=1/np*(sz-a1*sx-a2*sy);
-            D=-a0*C;
-        else
-            if B~=0
-                a1=-A/B;
-                a0=1/np*(sy-a1*sx);
-                D=-a0*B;
-            else
-                if A~=0
-                    a1=-B/A;
-                    a0=1/np*(sx-a1*sy);
-                    D=-a0*A;
-                end
-            end
-        end
-        v=[ii jj size(jointset,1) A B C D ];
-        familia_cluster_plano=[familia_cluster_plano; v];
-        waitbar(jj/nc,h);
-    end 
-    close(h);
-end
-
-% limpiamos las familias sin clústers
-puntos_familia_cluster=puntos_familia_cluster(puntos_familia_cluster(:,5)>0,:);
 
 %% unificación de clusters según su desviación típica
 % calculamos la sigma de cada cluster para cada familia
@@ -211,6 +123,7 @@ else
         close(h);
     end
 end
+
 
 end
 

@@ -141,7 +141,7 @@ end
 % limpiamos la matriz de salida P2
 np2=np2-1;
 if np2==0
-    msgbox('Atention!! No coplanar poin was founded!!!');
+    msgbox('Atention! No coplanarity was found!');
 else
     P=P2(1:np2,:); % actualizamos P2
     planos=planos(1:np2,:); %actualizamos la salida planos

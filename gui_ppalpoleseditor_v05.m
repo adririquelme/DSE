@@ -670,7 +670,7 @@ numberisolines=80; % número de isoloníneas
 % isolines=(maxd-mind)/numberisolines;
 
     cla(handles.axes_11,'reset'); % limpiamos las figuras existentes
-    wulff;
+    falsilla_riquelme;
     % opcion3D representa en 3D, pero en futuras versiones se queradrá sólo
     % en 3D porque no tiene sentido el 2D.
     opcion3D = 1;
