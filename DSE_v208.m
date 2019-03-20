@@ -1220,6 +1220,7 @@ set(handles.pushbutton_save_txtfam,'Enable',phase4);
 set(handles.pushbutton_5aclusteranalysis,'Enable',phase5);
 set(handles.pushbutton_51clustereditor,'Enable',phase5);
 set(handles.pushbutton_52restartclusters,'Enable',phase5);
+set(handles.pushbutton_5bmargeclusters,'Enable',phase5);
 
 set(handles.text33,'Enable',phase5);
 set(handles.text34,'Enable',phase5);

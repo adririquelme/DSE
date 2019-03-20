@@ -84,13 +84,15 @@ for ii=1:nf
     % con las familias y los cluster, calculamos la ecuación del plano de
     % cada cluster, notación Ax+By+Cz+D=0, y o metemos en
     % familia_cluster_plano
-    h=waitbar(0,['Calculating JS # ',num2str(ii),' cluster equations. Please wait']);
+    h=waitbar(0,['Calculating JS # ',num2str(ii),'/',num2str(nf),' cluster eqs. Please wait']);
     for jj=1:nc
         jointset=find(puntos_familia_cluster(:,4)==ii & puntos_familia_cluster(:,5)==jj);
         M=puntos_familia_cluster(jointset,1:3); % matriz que tiene los puntos le la familia ii y cluster jj
         if vnfamilia==0
             % calculamos el vector normal ajustándolo al clúster
-            [pc, ~, ~ ] = princomp (M,'econ');
+            % [pc, ~, ~ ] = princomp (M,'econ'); % orden que dejará de
+            % funcionar
+            [pc, ~, ~ ] = pca (M,'econ');
             vn=cross(pc(:,1),pc(:,2));% vector normal
             vn=vn/norm(vn); %vector normal normalizado, |vn|=1
             A=vn(1);
