@@ -1,4 +1,4 @@
-function [P, calidad_tin, planos]=f_setup_planes_v06(P, npb, tolerancia)
+function [P, calidad_tin, planos]=f_setup_planes_v07(P, npb, tolerancia)
 %% Función que prepara los puntos y genera los planos objeto de estudio
 % Adrián Riquelme, abril 2013
 %    {For a set of points calculates the k nearest neighbours and calculates its coplanarity and its normal vector}

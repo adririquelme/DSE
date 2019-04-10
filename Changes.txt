@@ -1,3 +1,6 @@
+DSE_209
+190410 In f_report.m, change datestr(today) per date. Now it is not needed the Financial Toolbox. Thanks Tristan :D
+190410 Corrected a bug in the ppal_poles matrix when editing the principal poles. Now inserting new ppal poles should work better.
 DSE_206
 170305 Added a new stereonet designed by A. Riquelme
 170305 Created this log. Maybe too late :-(

@@ -1,4 +1,4 @@
-function varargout = DSE_v208(varargin)
+function varargout = DSE_v209(varargin)
 %    Copyright (C) {2015}  {Adrián Riquelme Guill, adririquelme@gmail.com}
 %
 %    This program is free software; you can redistribute it and/or modify
@@ -18,17 +18,17 @@ function varargout = DSE_v208(varargin)
 %    Discontinuity Set Extractor comes with ABSOLUTELY NO WARRANTY.
 %    This is free software, and you are welcome to redistribute it
 %    under certain conditions.
-% DSE_v208 MATLAB code for DSE_v208.fig
-%      DSE_v208, by itself, creates a new DSE_v208 or raises the existing
+% DSE_v209 MATLAB code for DSE_v209.fig
+%      DSE_v209, by itself, creates a new DSE_v209 or raises the existing
 %      singleton*.
 %
-%      H = DSE_v208 returns the handle to a new DSE_v208 or the handle to
+%      H = DSE_v209 returns the handle to a new DSE_v209 or the handle to
 %      the existing singleton*.
 %
-%      DSE_v208('CALLBACK',hObject,eventData,handles,...) calls the local
+%      DSE_v209('CALLBACK',hObject,eventData,handles,...) calls the local
 %      function named CALLBACK in DSE_V06.M with the given input arguments.
 %
-%      DSE_v208('Property','Value',...) creates a new DSE_V06 or raises the
+%      DSE_v209('Property','Value',...) creates a new DSE_V06 or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
 %      applied to the GUI before DSE_v06_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
@@ -39,9 +39,9 @@ function varargout = DSE_v208(varargin)
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help DSE_v208
+% Edit the above text to modify the response to help DSE_v209
 
-% Last Modified by GUIDE v2.5 04-Jul-2018 10:33:44
+% Last Modified by GUIDE v2.5 10-Apr-2019 14:47:25
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -71,7 +71,7 @@ function DSE_v06_OpeningFcn(hObject, ~, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to DSE_v06 (see VARARGIN)
 
-% Choose default command line output for DSE_v208
+% Choose default command line output for DSE_v209
 handles.output = hObject;
     % A = imread('img/salir','bmp');
     % set(handles.pushbutton_exit,'cdata',A);
@@ -154,7 +154,7 @@ function pushbutton_2setupplanes_Callback(hObject, ~, handles)
 tic
 P=handles.data.P;
 npb=str2double(get(handles.box_nneighbours,'String'));
-tolerancia=str2num(get(handles.box_tolerancia,'String'));
+tolerancia=str2double(get(handles.box_tolerancia,'String'));
 % guardo los datos con los que calculamos
 handles.data.npb=npb;
 handles.data.tolerancia=tolerancia;
@@ -271,7 +271,7 @@ guidata(hObject,handles)
 % --- Executes on button press in pushbutton_4ppalpolesassignment.
 function pushbutton_4ppalpolesassignment_Callback(hObject, ~, handles)
 % Asignación de polos principales a los puntos
-tic
+tic; % Inicio un contador para ver el tiempo empleado
 set(handles.text_status,'String','Assigning the principal planes to the points ...')
 cone=str2double(get(handles.box_cone,'String'));
 cone=cone/180*pi;
@@ -284,14 +284,12 @@ handles.data.puntos_ppalasignados=puntos_ppalasignados;
 set(handles.pushbutton_plotstereopolesppal,'Enable','on');
 set(handles.pushbutton_plot3dpointsppal,'Enable','on');
 % guardo los datos con los que calculamos
-handles.data.cone=str2num(get(handles.box_cone,'String'));
+handles.data.cone=str2double(get(handles.box_cone,'String'));
     % actualizo el numero de puntos que tengo
     I=find(polos_estereoppalasignados(:,3)>0);
     [npuntos,~]=size(I);
     set(handles.text_npuntos,'Visible','on','String',npuntos);
     set(handles.text_label_npuntos,'Visible','on');
-% la representación automática está desactivada
-% pushbutton_plotstereopolesppal_Callback(hObject, eventdata, handles);
 % actualizo el número de puntos que representan los polos principales
 planos_pples=handles.data.planos_pples;
 [n,~]=size(P); % número de puntos totales
@@ -2341,6 +2339,13 @@ set(handles.text_status,'String','Editing the principal poles ...');
 % nueva ventana
 planos_pples=handles.data.planos_pples;
 polos_pples_cart=handles.data.polos_pples_cart;
+% Si los planos principales todavía no tienen el % de puntos asignados, la matriz tendrá dimensión 3 filas. 
+% Regularizo esa matriz para que tenga dimensión 4 columnas.
+[n,c]=size(planos_pples);
+if c==3
+    planos_pples=[planos_pples zeros(n,1)];
+    % polos_pples_cart=[polos_pples_cart zeros(n,1)];
+end
 X=handles.data.X;
 Y=handles.data.Y;
 density=handles.data.density;
@@ -2353,7 +2358,7 @@ setappdata(0,'global_Y',Y);
 setappdata(0,'global_density',density);
 setappdata(0,'polos_estereo_cartesianas',polos_estereo_cartesianas);
 setappdata(0,'P',P);
-h = gui_ppalpoleseditor_v05;
+h = gui_ppalpoleseditor_v06;
 waitfor(h);
 planos_pples=getappdata(0,'global_ppal_poles');
 % guardamos la edición en las handles
@@ -2628,3 +2633,11 @@ tiempoempleado=floor(toc);
     set(handles.listbox_log, 'ListboxTop', N); % vista de la última línea
     handles.data.log = S; 
 guidata(hObject,handles)
+
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over box_nsec.
+function box_nsec_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to box_nsec (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

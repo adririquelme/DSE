@@ -22,7 +22,8 @@ function [ report ] = f_report( pathname, filename, npoints, knn, tolerancia, nb
 %    under certain conditions.
 
 f = fopen([pathname,filename, ' - report.txt'], 'wt'); % creo la funcíon que abre el archivo para escribir
-fprintf(f, 'Discontinuity Set Extractor, %s. Report of the used parameters. \n',datestr(today));
+% fprintf(f, 'Discontinuity Set Extractor, %s. Report of the used parameters. \n',datestr(today));
+fprintf(f, 'Discontinuity Set Extractor, %s. Report of the used parameters. \n',date);
 fprintf(f, 'File: %s \n \n', [pathname, filename]);
 
 % Parámetros de cálculo

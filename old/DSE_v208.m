@@ -41,7 +41,7 @@ function varargout = DSE_v208(varargin)
 
 % Edit the above text to modify the response to help DSE_v208
 
-% Last Modified by GUIDE v2.5 04-Jul-2018 10:33:44
+% Last Modified by GUIDE v2.5 25-Mar-2019 12:08:16
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -154,7 +154,7 @@ function pushbutton_2setupplanes_Callback(hObject, ~, handles)
 tic
 P=handles.data.P;
 npb=str2double(get(handles.box_nneighbours,'String'));
-tolerancia=str2num(get(handles.box_tolerancia,'String'));
+tolerancia=str2double(get(handles.box_tolerancia,'String'));
 % guardo los datos con los que calculamos
 handles.data.npb=npb;
 handles.data.tolerancia=tolerancia;
@@ -1220,6 +1220,7 @@ set(handles.pushbutton_save_txtfam,'Enable',phase4);
 set(handles.pushbutton_5aclusteranalysis,'Enable',phase5);
 set(handles.pushbutton_51clustereditor,'Enable',phase5);
 set(handles.pushbutton_52restartclusters,'Enable',phase5);
+set(handles.pushbutton_5bmargeclusters,'Enable',phase5);
 
 set(handles.text33,'Enable',phase5);
 set(handles.text34,'Enable',phase5);
@@ -2352,7 +2353,7 @@ setappdata(0,'global_Y',Y);
 setappdata(0,'global_density',density);
 setappdata(0,'polos_estereo_cartesianas',polos_estereo_cartesianas);
 setappdata(0,'P',P);
-h = gui_ppalpoleseditor_v05;
+h = gui_ppalpoleseditor_v06;
 waitfor(h);
 planos_pples=getappdata(0,'global_ppal_poles');
 % guardamos la edición en las handles
@@ -2555,9 +2556,11 @@ function menu_savepoints_Callback(hObject, eventdata, handles)
 if isfield(handles.data,'P')
 	P=handles.data.P;
     % Añado las columnas extra
-    [~,nce]=size(handles.data.P_extradata);
-    if nce>=1 
-        P(:,4:nce)=handles.data.P_extradata(
+    if isfield(handles.data,'P_extradata')
+        [~,nce]=size(handles.data.P_extradata);
+        if nce>=1 
+            P(:,4:nce)=handles.data.P_extradata(:,:);
+        end
     end
 	pathname = handles.data.pathname;
 	filename = handles.data.filename;
@@ -2625,3 +2628,11 @@ tiempoempleado=floor(toc);
     set(handles.listbox_log, 'ListboxTop', N); % vista de la última línea
     handles.data.log = S; 
 guidata(hObject,handles)
+
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over box_nsec.
+function box_nsec_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to box_nsec (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
