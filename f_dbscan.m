@@ -30,8 +30,9 @@ function [ T ] = f_dbscan( A , eps, ppcluster)
 %    under certain conditions.
 
 [n,d]=size(A);
-h=waitbar(0,['Cluster analysis in process. ',num2str(n),' points. Please wait']);
+% h=waitbar(0,['Cluster analysis in progress. ',num2str(n),' points. Please wait.'],'Name','DBSCAN analysis');
 
+% Minpts, se deja en 4
 minpts=d+1; %minium number of eps-neighbors to consider into a cluster
 T=zeros(n,1);
 maxcluster=1;
@@ -40,12 +41,12 @@ maxcluster=1;
 % calculamos los puntos dentro del radio de eps
 [idx, ~] = rangesearch(A,A,eps);
 for i=1:n
-    NeighborPts=idx{i};
+    NeighbourPts=idx{i};
     % si ha encontrado el mínimo de puntos, hacer lo siguiente
     % cuidado, el primer índice de idx es el mismo punto
-    if length(NeighborPts)>=minpts %el punto es un core point
+    if length(NeighbourPts)>=minpts %el punto es un core point
         % ¿el punto tiene clúster asignado?
-        cv=T(NeighborPts); %clúster vecinos
+        cv=T(NeighbourPts); %clúster vecinos
         mincv=min(cv); %índice del menor clúster
         mincv2=min(cv((cv>0))); %índice del menor clúster no nulo
         maxcv=max(cv);%índice del mayor clúster
@@ -61,7 +62,7 @@ for i=1:n
         switch caso
             case 0
                 % ningún punto tiene cúster asingado, se lo asignamos
-                T(NeighborPts)=maxcluster;
+                T(NeighbourPts)=maxcluster;
                 % T(i)=maxcluster;
                 maxcluster=maxcluster+1; %incrementamos el contador para nuevos clústers
             case 1
@@ -69,14 +70,14 @@ for i=1:n
                 % mismo clúster
                 if mincv==0
                     % asignamos los que no tienen clúster
-                    T(NeighborPts(cv==0))=mincv2;
+                    T(NeighbourPts(cv==0))=mincv2;
                 end
                 % T(i)=mincv2;
             case 2
                 % hay puntos sin clúster y otros clústers ya asignados
                 % menor clúster no nulo: mincv2
                 % a los puntos sin clúster les asigno uno
-                T(NeighborPts(cv==0))=mincv2;
+                T(NeighbourPts(cv==0))=mincv2;
                 % reagrupamos los puntos que ya tienen clúster
                 b=cv(cv>mincv2); % clústers a reasignar
                 [~,n1]=size(b);
@@ -87,21 +88,23 @@ for i=1:n
                         aux=b(j);
                     end
                 end
-                % T(i)=mincv2;
         end
     else
-        %el punto no tiene suficientes vecinos.
+        % en esta caso, length(NeighbourPts) < minpts
+        % el punto no tiene suficientes vecinos.
+        % no hago nada y dejo al punto morir
     end
-    waitbar(i/n,h);
+    % waitbar(i/n,h);
+    % waitbar(i/n,h,sprintf('%12.0f %',i/n*100));
 end
 %% homogeneizamos la salida
-% si la salida está vacía, es decir que no se encuentra ningún cluster, no hacemos nada
+% si la salida está vacía (no se encuentra ningún cluster), no hacemos nada
 if sum(T)==0 
     % no hademos nada, la salida está vacía
     % como todos los puntos tienen valor cero, se eliminarán después
 else
-    % en esta fase cogemos los clústers obtenidos y eliminamos los que no
-    % superen los N (ppcluster)
+    % en esta fase tomamos los clústers obtenidos y eliminamos los que no
+    % superen los el número mínimo (ppcluster)
     % se ordenan los clústers según mayor a menor nº de puntos obtenidos
     T2=T;
     cluster=unique(T2,'sorted');
@@ -129,5 +132,5 @@ else
         T(T2==A(2,I(ii)))=ii;
     end
 end
-close(h);
+% close(h);
 

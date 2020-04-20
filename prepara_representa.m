@@ -5,7 +5,7 @@ function [polos_estereo_polares, polos_estereo_cartesianas]=prepara_representa(p
 % matrices polos contienen la proyección del polo del vector normal P'
 % input
 % - planos_estereo: matriz que contiene los datos de los vectores de
-% buzamiento de los planos, en forma w y b
+% buzamiento de los planos, en forma w (dip direction) y b (dip)
 % output
 % - polos_estereo_polares
 % - polos_estereo_cartesianas
@@ -29,20 +29,6 @@ for ii=1:np
     polos_estereo_cartesianas(ii,2)=tan (beta / 2)*sin(alfa); % y en las cartesianas
 end
 
-% se representa en la plantilla los datos. 
-% Nota: podemos jugar dándole tamaño o color dependiendo de la calidad del
-% punto
-% subplot(1,2,1);
-% % dibujamos la plantilla de wulff
-% dibuja_wulff
-% scatter(polos_estereo_cartesianas(:,1),polos_estereo_cartesianas(:,2),calidad_tin(:,1),calidad_tin(:,1));
-% title('ProyecciÃ³n estereogrÃ¡fica de los planos')
-% xlabel('eje X'); ylabel('eje Y');
-% subplot(1,2,2);
-% figure('Name','Histograma de los polos','NumberTitle','on')
-% hist3(polos_estereo_cartesianas);
-% title('Histograma de los polos P. detectados')
-% xlabel('eje X'); ylabel('eje Y');zlabel('n polos');
 
 end
 

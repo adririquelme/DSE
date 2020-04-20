@@ -40,11 +40,11 @@ densidadminima = 0.0001; %establezco la densidad mínima en tanto por uno
 [ dmax, Xmax, Ymax ] = maxsearch2d( X,Y,density,densidadminima) ; 
 [~, ns]=size(dmax);
 
-% ns es el n de máximos que he encontrado, por lo que no puedo encontrar
+% ns es el número de máximos que he encontrado, por lo que no puedo encontrar
 % más planos principales que ns
 
-%convertimos la tolerancia. Es el valor con el que se compara el
-%paralelismo de los vectores normales
+% convertimos la tolerancia. Es el valor con el que se compara el
+% paralelismo de los vectores normales
 
 proyeccion = cos(angulovpples/180*pi);
 
@@ -80,6 +80,10 @@ while para==0
     if x==0 && y==0
         alfa=0;
         beta=0;
+    end
+    % Si beta es mayor que pi/2, dejarlo en pi/2
+    if beta>pi/2
+        beta=pi/2;
     end
     polos_pples(kk,1)=alfa/pi*180;
     polos_pples(kk,2)=beta/pi*180;

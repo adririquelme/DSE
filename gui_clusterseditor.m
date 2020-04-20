@@ -59,6 +59,7 @@ puntos_familia_cluster=getappdata(0,'puntos_familia_cluster');
 familia_cluster_plano=getappdata(0,'familia_cluster_plano');
 puntos_familia_cluster_fullclusters=getappdata(0,'puntos_familia_cluster_fullclusters');
 familia_cluster_plano_fullclusters=getappdata(0,'familia_cluster_plano_fullclusters');
+polos_estereoppalasignados=getappdata(0,'polos_estereoppalasignados');
 % Configuro el slider
 familias=unique(familia_cluster_plano(:,1),'sorted');
 maxfamilia=length(familias);

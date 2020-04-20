@@ -22,7 +22,7 @@ function varargout = gui_persistence(varargin)
 
 % Edit the above text to modify the response to help gui_persistence
 
-% Last Modified by GUIDE v2.5 13-Oct-2017 18:35:05
+% Last Modified by GUIDE v2.5 21-Jan-2020 16:59:25
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -435,8 +435,15 @@ figure;
 nsaltos=30; % número de saltos para la exponencial negativa
 % El orden de las persistencias es dip, dipd, max y area
 % Primero represento las persistencias en la dirección del dip
+% Para representar los DS en horizontal (1 por col), poner 1, para
+% trasponer poner representación en 0
+repr=0;
 for i=1:nds
-    subplot(4,nds,i);
+    if repr==1
+        subplot(4,nds,i);
+    else
+        subplot(nds,4,4*(i-1)+1);
+    end
     I=find(resultados(:,1)==i);
     [n,~]=size(I); persistencias=zeros(n,1);
     persistencias(1:n,1)=resultados(I,3);
@@ -458,7 +465,11 @@ for i=1:nds
 end
 % Persistencia en la dirección del strike
 for i=1:nds
-    subplot(4,nds,nds+i);
+	if repr==1
+        subplot(4,nds,nds+i);
+    else
+        subplot(nds,4,4*(i-1)+2);
+	end
     I=find(resultados(:,1)==i);
     [n,~]=size(I); persistencias=zeros(n,1);
     persistencias(1:n,1)=resultados(I,4);
@@ -481,7 +492,11 @@ end
 
 % Persistencia max
 for i=1:nds
-    subplot(4,nds,2*nds+i);
+	if repr==1
+        subplot(4,nds,2*nds+i);
+    else
+        subplot(nds,4,4*(i-1)+3);
+	end    
     I=find(resultados(:,1)==i);
     [n,~]=size(I); persistencias=zeros(n,1);
     persistencias(1:n,1)=resultados(I,5);
@@ -504,7 +519,11 @@ end
 
 % Persistencia area
 for i=1:nds
-    subplot(4,nds,3*nds+i);
+	if repr==1
+        subplot(nds,4,3*nds+i);
+    else
+        subplot(nds,4,4*(i-1)+4);
+	end      
     I=find(resultados(:,1)==i);
     [n,~]=size(I); persistencias=zeros(n,1);
     persistencias(1:n,1)=resultados(I,6);

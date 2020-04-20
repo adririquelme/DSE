@@ -61,15 +61,14 @@ P=P(:,1:3);
 % euclidea (Minkowski p=2) npb (n de puntos en el buffer) indica
 % cuantos puntos busca, por lo que como el primer punto mas cercano
 % es él mismo, k es npb+1
-% npb = input('Indique el num de puntos cercanos a buscar: (num sugerido 8)  ');
+
 if npb<4
     msgbox('Has elegido un número de puntos insuficiente. Se fija en 4','atención!!','warn');
     npb = 4;
 end
-% como la primera columna es el mismo punto, aumentamos el n de puntos de búsqueda en 1
-% npb = npb +1;
 
 [idx,~]=knnsearch(P,P,'NSMethod','kdtree','distance','euclidean','k',npb);
+
 % idx: matriz [n,npb+1]. La primera columna indica el punto de referencia,
 % las npb columnas restantes indican los npb puntos más cercanos según
 % la norma elegida. El valor es el id del punto. dist: matriz [n,npb+1]. La

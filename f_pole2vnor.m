@@ -47,14 +47,15 @@ switch nargin
         py=varargin{2};
 end
 avn=zeros(size(px)); %angulo vector normal
-rho=zeros(size(px));
-phi=zeros(size(px));
-beta=zeros(size(px));
-alpha=zeros(size(px));
-nxy=zeros(size(px));
-omega=zeros(size(alpha));
+% rho=zeros(size(px));
+% phi=zeros(size(px));
+% beta=zeros(size(px));
+% alpha=zeros(size(px));
+% nxy=zeros(size(px));
+% omega=zeros(size(alpha));
 % calculamos los parámetros
-I=find(px>=0 & py>=0);
+
+I=find(px>0 & py>0);
     %a(I)=atan(py./px);
     avn(I)=atan(py(I)./px(I))+pi;
 I=find(px<0 & py>=0);
@@ -73,5 +74,11 @@ nxy=cos(alpha);
 N(:,1)=nxy.*cos(avn);
 N(:,2)=nxy.*sin(avn);
 N(:,3)=nxy.*tan(alpha);
+
+% Para los planos horizontales, donde x=y=0, vector vertical
+I=find(px==0 & py==0);
+N(I,1)=0; N(I,2)=0; N(I,3)=1;
+
+
 end
 

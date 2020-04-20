@@ -651,7 +651,7 @@ Y=handles.Y;
 density=handles.density;
 P=handles.P;
 ppal_poles=handles.ppal_poles;
-% representamos la salida 
+% representamos la salida
 [kk, nc]=size(polos_pples_cart);
 if nc==2
     tamanyo=1;
@@ -669,36 +669,23 @@ end
 numberisolines=80; % número de isoloníneas
 % isolines=(maxd-mind)/numberisolines;
 
-    cla(handles.axes_11,'reset'); % limpiamos las figuras existentes
-    falsilla_riquelme;
-    % opcion3D representa en 3D, pero en futuras versiones se queradrá sólo
-    % en 3D porque no tiene sentido el 2D.
-    opcion3D = 1;
-    if opcion3D ==1
-        % opción 3D
-        scatter3(handles.axes_11,polos_pples_cart(1:kk,1),polos_pples_cart(1:kk,2),polos_pples_cart(1:kk,3),tamanyo,'filled','MarkerEdgeColor','k','MarkerFaceColor',[0 .75 .75]);
-        title(handles.axes_11,['Poles Density Plot, Principal Poles. Isolines each ',num2str(100/numberisolines),'%']);
-        xlabel(handles.axes_11,'axis X'); ylabel(handles.axes_11,'axis Y');
-        hold on; contour3(handles.axes_11,X,Y,density,numberisolines);
-        for ii=1:kk
-            text(xa(ii),xb(ii),xc(ii), ['J_{',num2str(ii),'}'],'FontSize',18,'EdgeColor','k','BackgroundColor','w');
-        end
-    else
-        % opcion 2D
-        scatter(handles.axes_11,polos_pples_cart(1:kk,1),polos_pples_cart(1:kk,2),tamanyo,'filled','MarkerEdgeColor','k','MarkerFaceColor',[0 .75 .75]);
-        title(handles.axes_11,['Poles Density Plot, Principal Poles. Isolines each ',num2str(100/numberisolines),'%']);
-        xlabel(handles.axes_11,'axis X'); ylabel(handles.axes_11,'axis Y');
-        hold on; contour(handles.axes_11,X,Y,density,numberisolines);  
-        for ii=1:kk
-            text(xa(ii),xb(ii), ['J_{',num2str(ii),'}'],'FontSize',18,'EdgeColor','k','BackgroundColor','w');
-        end
-    end
-    % Doy formato a la gráfica
-    axis (handles.axes_11,[-1 1 -1 1]); axis(handles.axes_11,'square');
-    % preparo el puntero
-    dcm = datacursormode(gcf);
-    datacursormode on;
-    set(dcm,'updatefcn',@myfunction)
+cla(handles.axes_11,'reset'); % limpiamos las figuras existentes
+falsilla_riquelme;
+
+% opción 3D
+scatter3(handles.axes_11,polos_pples_cart(1:kk,1),polos_pples_cart(1:kk,2),polos_pples_cart(1:kk,3),tamanyo,'filled','MarkerEdgeColor','k','MarkerFaceColor',[0 .75 .75]);
+title(handles.axes_11,['Poles Density Plot, Principal Poles. Isolines each ',num2str(100/numberisolines),'%']);
+xlabel(handles.axes_11,'axis X'); ylabel(handles.axes_11,'axis Y');
+hold on; contour3(handles.axes_11,X,Y,density,numberisolines);
+for ii=1:kk
+    text(xa(ii),xb(ii),xc(ii), ['J_{',num2str(ii),'}'],'FontSize',18,'EdgeColor','k','BackgroundColor','w');
+end
+% Doy formato a la gráfica
+axis (handles.axes_11,[-1 1 -1 1]); axis(handles.axes_11,'square');
+% preparo el puntero
+dcm = datacursormode(gcf);
+datacursormode on;
+set(dcm,'updatefcn',@myfunction)
 
 % Antes de cerrrar calculo el % de puntos con la asingacion y lo pongo en
 % la tabla

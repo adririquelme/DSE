@@ -1,5 +1,5 @@
 function [planos_estereo]=prepara_estereo(planos)
-% Partimos de que tenemos la matriz planos, con informaciï¿½n de todos los
+% Partimos de que tenemos la matriz planos, con información de todos los
 % vectores normales de los planos obtenidos
 % w: dirección del vector buzamiento
 % b: ángulo del buzamiento respecto a la horizontal
@@ -7,7 +7,7 @@ function [planos_estereo]=prepara_estereo(planos)
 % columnas. En la primera columna se encuentra el valor de w y en la
 % segunda el de b
 % input
-% - planos: matriz que contiene la ecuaciï¿½n de cada plano, ABCD
+% - planos: matriz que contiene la ecuación de cada plano, ABCD
 % output
 % - planos_estereo: matriz que contiene los datos de los vectores de
 % buzamiento de los planos, en forma w y b

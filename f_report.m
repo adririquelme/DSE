@@ -58,7 +58,11 @@ fprintf(f, '\t\t%5.2f\t\t%5.2f\t\t%5.4f\t\t%5.2f\n', planospples');      % Write
 fprintf(f, '\t\tWhere %% is the number of assigned points to a DS over the total number of points \n');
 fprintf(f, '\n - Extracted clusters and its corresponding plane equation (Ax+By+Cz+D=0) \n');
 fprintf(f, '\t\t    DS\t\tcluster\t\tn_pts\t\t  A\t\t\t  B\t\t\t  C\t\t\t  D\t\t\ttsigma \n');
-fprintf(f, '\t\t%5.0f\t\t%5.0f\t\t%5.0f\t\t%+5.4f\t\t%+5.4f\t\t%+5.4f\t\t%+5.4f\t%+5.4f \n', familiaclusterplano');
+if size(familiaclusterplano,2)==8
+    fprintf(f, '\t\t%5.0f\t\t%5.0f\t\t%5.0f\t\t%+5.4f\t\t%+5.4f\t\t%+5.4f\t\t%+5.4f\t\t%+5.4f \n', familiaclusterplano');
+else
+    fprintf(f, '\t\t%5.0f\t\t%5.0f\t\t%5.0f\t\t%+5.4f\t\t%+5.4f\t\t%+5.4f\t\t%+5.4f\n', familiaclusterplano');
+end
 fclose(f); % cierro el archivo
 
 % Genero la salida completamente inútil

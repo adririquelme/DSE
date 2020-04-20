@@ -1,2 +1,19 @@
 
 *.prj
+old/Crea_Esfera.m
+old/Crea_Esfera_casquete.m
+old/CreaCilindro_v02.m
+old/CreaCono.m
+old/CreaHexaedro_v02.m
+old/CreaNube.m
+old/CreaPlano.m
+old/CreaPoliedro.m
+old/CreaTetraedro.m
+old/DSE_v209.fig
+old/DSE_v209.m
+old/DSE_v210.fig
+old/DSE_v210.m
+old/f_clusterclear.m
+old/f_ppal2cluster_v07.m
+old/f_ppal2cluster_v08.m
+old/f_ppal2cluster_v09.m
