@@ -1,6 +1,18 @@
-DSE_209
++ DSE 3_01
+Dip and dipdir are included for each cluster in the report_v02
+210321 Data cursor tip when plotting the density fuction: fixed
+210321 Fixed the title of the main figure
++ DSE 3
+New GUI
++DSE_211
+Bug fix: normals without test and without toolboxes
++ DSE_210
+Toolboxes are used for normal vectors, dbscan and plotting the 3DPC
+HSV Colourmap calculation when toolboxes are available
+Txt files are now written faster
++ DSE_209
 190410 In f_report.m, change datestr(today) per date. Now it is not needed the Financial Toolbox. Thanks Tristan :D
 190410 Corrected a bug in the ppal_poles matrix when editing the principal poles. Now inserting new ppal poles should work better.
-DSE_206
++ DSE_206
 170305 Added a new stereonet designed by A. Riquelme
 170305 Created this log. Maybe too late :-(

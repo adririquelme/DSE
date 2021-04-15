@@ -56,7 +56,7 @@ switch casedbscan
         % Tenemos DBSCAN de MATLAB y lo vamos a usar que es más rápido
         % Minpts no necesita corrección
         T=dbscan(A,eps, minpts);
-    case 2
+    case 0
         % No hay DBSCAN y ejecuto mi programación inicial
         % Minpts: los que tienen que estar más él mismo
         T=zeros(n,1);

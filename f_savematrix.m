@@ -28,7 +28,7 @@ version=ver;
 toolboxes={version.Name};
 uso=length(find(contains(toolboxes,'MATLAB')==1));
 if uso>=1
-    if str2double(getfield(version,{find(contains(toolboxes,'MATLAB')==1)},'Version'))>=9.1
+    if str2double(getfield(version,{find(contains(toolboxes,'MATLAB')==1)},'Version'))>=9.6
         % Tengo la versión de MATLAB al menos 2019a y puedo usar
         % writematrix
         writematrix(matrix, filename,'Delimiter', 'tab');

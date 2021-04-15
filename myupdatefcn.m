@@ -1,4 +1,4 @@
-function txt = myupdatefcn(empt,event_obj)
+function output_txt = myupdatefcn(empt,event_obj)
 %    {Customizes text of data tips}
 %    Copyright (C) {2015}  {Adrián Riquelme Guill, adririquelme@gmail.com}
 %
@@ -22,7 +22,14 @@ function txt = myupdatefcn(empt,event_obj)
 % 
 
 pos = get(event_obj,'Position');
-x = pos(1); y=pos(2);
-[ dipdir, dip ] = f_cart2clar( x,y );
-% txt = {['Time: ',num2str(dipdir)], 'Amplitude: ',num2str(dip)]};
-txt = ['Time: ',num2str(dipdir), 'Amplitude: ',num2str(dip)];
+x = pos(1);
+y = pos(2);
+[dipdir, dip]=f_cart2clar(x,y);
+output_txt = {['Dip direction: ',num2str(dipdir,3),'[º]'],...
+    ['Dip: ',num2str(dip,3),'[º]']};
+
+% If there is a Z-coordinate in the position, display it as well
+if length(pos) > 2
+    output_txt{end+1} = ['Density: ',num2str(pos(3),4)];
+end
+

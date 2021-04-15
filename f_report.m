@@ -43,7 +43,6 @@ else
     fprintf(f, '- All clusters members of a discontinuity set have the same normal vector. \n');
 end
 fprintf(f, '- ksigmas: %s (parameter used for test if two clusters should be merged). \n \n', num2str(ksigmas));
-
 % Resultados
 fprintf(f, 'Results \n');
 fprintf(f, '- Number of points of the original point cloud: %s \n',num2str(npoints));
@@ -58,6 +57,9 @@ fprintf(f, '\t\t%5.2f\t\t%5.2f\t\t%5.4f\t\t%5.2f\n', planospples');      % Write
 fprintf(f, '\t\tWhere %% is the number of assigned points to a DS over the total number of points \n');
 fprintf(f, '\n - Extracted clusters and its corresponding plane equation (Ax+By+Cz+D=0) \n');
 fprintf(f, '\t\t    DS\t\tcluster\t\tn_pts\t\t  A\t\t\t  B\t\t\t  C\t\t\t  D\t\t\ttsigma \n');
+% Preparo la dirección de buzamiento y buzamiento de los clusters
+[w,b]=vnor2vbuz_v02(familiaclusterplano(:,A,B,C)
+
 if size(familiaclusterplano,2)==8
     fprintf(f, '\t\t%5.0f\t\t%5.0f\t\t%5.0f\t\t%+5.4f\t\t%+5.4f\t\t%+5.4f\t\t%+5.4f\t\t%+5.4f \n', familiaclusterplano');
 else
