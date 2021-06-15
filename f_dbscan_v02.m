@@ -2,6 +2,8 @@ function [ T ] = f_dbscan_v02( A , eps, minpts, ppcluster)
 % [ T, eps ] = f_dbscan_v02( A , npb, minpts, ppcluster)
 % Búsqueda de clústers mediante una búsqueda previa de vecinos
 % Aplicación del algoritmo DBSCAN
+% Desde la versión 2, se busca si está disponible el Toolbox y calcula los
+% clusters con la función propia de Matlab, mucho más rápida
 % Adrián Riquelme Guill, mayo 2013
 % Input:
 % - A: matriz con las coordenadas de los puntos
@@ -42,7 +44,7 @@ if uso==1
     % El toolbox está instalado, vamos a ver si es la versión que tiene
     % el dbscan
     if str2double(getfield(version,{find(contains(toolboxes,'Statistics and Machine Learning Toolbox')==1)},'Version'))>=11.5
-        % El DBSCAN se introdujo en la 2019aTenemos el DBSCAN, en la
+        % El DBSCAN se introdujo en la 2019a. Tenemos el DBSCAN, en la
         % versión del SMLT 11.5.
         casedbscan=1;
     else

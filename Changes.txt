@@ -1,6 +1,9 @@
 + DSE 3_01
+210526 D parameter is presented in the table transtaled to the cdg, so the numbers are smaller and the spacing can be discussed
+210526 Stereoplots also show the plane orientation picking the pole
+210525 Fixed pathname changes when loading the .mat file
 Dip and dipdir are included for each cluster in the report_v02
-210321 Data cursor tip when plotting the density fuction: fixed
+210321 Data cursor tip when plotting the density function: fixed
 210321 Fixed the title of the main figure
 + DSE 3
 New GUI

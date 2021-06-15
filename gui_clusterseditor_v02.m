@@ -68,8 +68,10 @@ if maxfamilia>1
 else
     set(handles.slider_ds,'Enable','off');
 end
-% pongo los clusters en la tabla
-set(handles.uitable_familiaclusterplano,'Visible','on','Data',familia_cluster_plano);
+% Traslado los puntos para que D esté en su CDG
+[familia_cluster_plano_tuneada] = f_tabla_homogeneizaD(familia_cluster_plano);
+% represento la salida en la matriz
+set(handles.uitable_familiaclusterplano,'Visible','on','Data',familia_cluster_plano_tuneada);
 % guardamos en las handles estas variables
 handles.puntos_familia_cluster=puntos_familia_cluster;
 handles.familia_cluster_plano=familia_cluster_plano;
@@ -111,8 +113,10 @@ ppclusterallds=str2double(get(handles.box_ppclusterallds,'String'));
 % puede aplicar el filtro en varias fases
 ds = 0; % le indico a la función que aplique esto a todos los DS
 [ puntos_familia_cluster, familia_cluster_plano, polos_estereoppalasignados_afterdbscan_limpio ] = f_clusterclear_v02( puntos_familia_cluster, familia_cluster_plano , ds, ppclusterallds,polos_estereoppalasignados_afterdbscan);
+% Traslado los puntos para que D esté en su CDG
+[familia_cluster_plano_tuneada] = f_tabla_homogeneizaD(familia_cluster_plano);
 % represento la salida en la matriz
-set(handles.uitable_familiaclusterplano,'Visible','on','Data',familia_cluster_plano);
+set(handles.uitable_familiaclusterplano,'Visible','on','Data',familia_cluster_plano_tuneada);
 % guardo los handles
 handles.puntos_familia_cluster=puntos_familia_cluster;
 handles.familia_cluster_plano=familia_cluster_plano;
@@ -137,9 +141,11 @@ ppclusterds=str2double(get(handles.box_ppclusterds,'String'));
 % puede aplicar el filtro en varias fases
 ds = str2double(get(handles.text_ds,'String')); % le indico a la función que aplique esto al DS
 [ puntos_familia_cluster, familia_cluster_plano ] = f_clusterclear( puntos_familia_cluster, familia_cluster_plano , ds, ppclusterds);
+% Traslado los puntos para que D esté en su CDG
+[familia_cluster_plano_tuneada] = f_tabla_homogeneizaD(familia_cluster_plano);
 % represento la salida en la matriz
-I=find(familia_cluster_plano(:,1)==ds);
-set(handles.uitable_familiaclusterplano,'Visible','on','Data',familia_cluster_plano(I,:));
+I=find(familia_cluster_plano_tuneada(:,1)==ds);
+set(handles.uitable_familiaclusterplano,'Visible','on','Data',familia_cluster_plano_tuneada(I,:));
 % dibujamos la función probabilística de acumulación de los ppc
 A=familia_cluster_plano;
 % h=figure;
@@ -256,9 +262,11 @@ cens = A(I,2)';
 cdfplot(puntosporcluster)
 % filtro los valores para que sólo salga esa familia
 familia_cluster_plano=getappdata(0,'familia_cluster_plano');
+% Traslado los puntos para que D esté en su CDG
+[familia_cluster_plano_tuneada] = f_tabla_homogeneizaD(familia_cluster_plano);
 % pongo los clusters en la tabla
-I=find(familia_cluster_plano(:,1)==ds);
-set(handles.uitable_familiaclusterplano,'Visible','on','Data',familia_cluster_plano(I,:));
+I=find(familia_cluster_plano_tuneada(:,1)==ds);
+set(handles.uitable_familiaclusterplano,'Visible','on','Data',familia_cluster_plano_tuneada(I,:));
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 

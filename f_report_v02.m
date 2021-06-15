@@ -21,8 +21,13 @@ function [ report ] = f_report( pathname, filename, npoints, knn, tolerancia, nb
 %    This is free software, and you are welcome to redistribute it
 %    under certain conditions.
 
-f = fopen([pathname,filename, ' - report.txt'], 'wt'); % creo la funcíon que abre el archivo para escribir
+[f,message] = fopen([pathname,filename, ' - report.txt'], 'wt'); % creo la funcíon que abre el archivo para escribir
 % fprintf(f, 'Discontinuity Set Extractor, %s. Report of the used parameters. \n',datestr(today));
+% Por si acaso, le digo que me muestre el error si lo hay
+if f < 0
+   error('Failed to open myfile because: %s', message);
+end
+
 fprintf(f, 'Discontinuity Set Extractor, %s. Report of the used parameters. \n',date);
 fprintf(f, 'File: %s \n \n', [pathname, filename]);
 
@@ -67,6 +72,14 @@ if size(familiaclusterplano,2)==8
 else
     fprintf(f, '\t\t%5.0f\t\t%5.0f\t\t%5.0f\t\t%5.0f\t\t%5.0f\t\t%+5.4f\t\t%+5.4f\t\t%+5.4f\t\t%+5.4f\n', salida');
 end
+fprintf(f, '\n Where: \n');
+fprintf(f, '\n \t- DS: index of the discontinuity set or family of planes \n');
+fprintf(f, '\n \t- cluster: index of the cluster of points, member of that discontinuity set \n');
+fprintf(f, '\n \t- n_pts: size of the cluster (number of points) \n');
+fprintf(f, '\n \t- dip: angle of dip of the plane \n');
+fprintf(f, '\n \t- dip_dir: angle of direction of the dip with respect to the North (in a local reference system) \n');
+fprintf(f, '\n \t- A, B, C and D: parameters of the plane equation of the cluster \n');
+fprintf(f, '\n \t- tsigma (when available): standard deviation of the distribution of distances point - cluster plane \n');
 fclose(f); % cierro el archivo
 
 % Genero la salida completamente inútil
