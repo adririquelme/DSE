@@ -1,3 +1,13 @@
++ DSE 3_02
+231114 Update to 2023b
+231114 Loading .ply with normals
+221229 Update about
+221229 New Cluster Editor, programmed using App Designer
+221229 Fix date for log, updating obsolete functions
+221229 New DS editor, programmed using App Designer
+211028 Added Toolbox info for DBSCAN search (gui bar)
+211028 Fixed disabled save .m
+211029 Changed main icons, to avoid problem of path
 + DSE 3_01
 210526 D parameter is presented in the table transtaled to the cdg, so the numbers are smaller and the spacing can be discussed
 210526 Stereoplots also show the plane orientation picking the pole

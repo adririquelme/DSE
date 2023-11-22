@@ -88,7 +88,7 @@ switch casedbscan
                 end
                 switch caso
                     case 0
-                        % ningún punto tiene cúster asingado, se lo asignamos
+                        % ningún punto tiene clúster asignado, se lo asignamos
                         T(NeighbourPts)=maxcluster;
                         % T(i)=maxcluster;
                         maxcluster=maxcluster+1; %incrementamos el contador para nuevos clústers

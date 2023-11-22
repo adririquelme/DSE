@@ -67,6 +67,11 @@ if npb<4
     npb = 4;
 end
 
+% Nota: Matlab utiliza la búqueda de region growing Kd-tree sin no se le
+% dice nada. Para hacer la búsqueda exhaustiva hay que decirle que el tipo
+% de búsqueda es Mdl, pero no intersa porque kdtree es más rápido
+
+
 [idx,~]=knnsearch(P,P,'NSMethod','kdtree','distance','euclidean','k',npb);
 
 % idx: matriz [n,npb+1]. La primera columna indica el punto de referencia,

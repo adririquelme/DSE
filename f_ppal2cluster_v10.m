@@ -57,7 +57,24 @@ puntos=puntos_ppalasignados(:,1:3);
 familia=puntos_ppalasignados(:,4);
 nf=max(familia);
 
-f = waitbar(0,'1','Name','DBSCAN Analysis: searching for clusters');
+% Primero vemos si uso o no del Computer Vision Toolbox de MATLAB
+version=ver;
+toolboxes={version.Name};
+uso=length(find(contains(toolboxes,'Statistics and Machine Learning Toolbox')==1));
+if uso==1
+    % El toolbox está instalado, vamos a ver si es la versión que tiene
+    % el dbscan
+    if str2double(getfield(version,{find(contains(toolboxes,'Statistics and Machine Learning Toolbox')==1)},'Version'))>=11.5
+        % El DBSCAN se introdujo en la 2019a. Tenemos el DBSCAN, en la
+        % versión del SMLT 11.5.
+        f = waitbar(0,'1','Name','DBSCAN Analysis via Toolbox: searching for clusters');
+    else
+        % No hay DBSCAN y hay que ir a mi programación
+        f = waitbar(0,'1','Name','DBSCAN Analysis: searching for clusters');
+    end
+end
+
+
 
 for ii=1:nf
 	% Empezamos a calcular los clusters

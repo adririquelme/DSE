@@ -37,6 +37,8 @@ function [polos_pples, polos_pples_cart, density, X, Y]=f_prepara_planos_kde(pol
 % nsec = input('Introduce el num de sectores a considerar.\nPotencia de 2: 2,4,8,16,32,64,128... \nRecomendable 64, 2^6=64: \n');
 densidadminima = 0.0001; %establezco la densidad mínima en tanto por uno
 [~,density,X,Y]=kde2d(polos_estereo_cartesianas,nsec);
+% Esta función busca los máximos relatios en los vértices. Se puede
+% mejorar.
 [ dmax, Xmax, Ymax ] = maxsearch2d( X,Y,density,densidadminima) ; 
 [~, ns]=size(dmax);
 

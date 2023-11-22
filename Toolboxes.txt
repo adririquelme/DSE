@@ -1,3 +1,11 @@
+Necesarios para DSE:
+
 Computer Vision Toolbox
 Statistics and Machine Learning Toolbox
 Text Analytics Toolbox
+
+Adicionales:
+Curve fitting toolbox
+Image processing toolbox
+Lidar toolbox
+Matlab compiler
