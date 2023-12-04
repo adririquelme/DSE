@@ -1,6 +1,8 @@
 # DSE: Discontinuity Set Extractor
-Software to extract discontinuity sets from rock masses' 3D point clouds
+Software for extracting discontinuity sets from 3D point clouds of rock masses.
 
-DSE is programmed by Adrián Riquelme for testing part of his PdD studies. Its aim is to extract discontinuity sets from a rock mass. The input data is a 3D point cloud, which can be acquired by means of a 3D laser scanner (LiDAR or TLS), digital photogrammetry techniques (such as SfM) or synthetic data. It applies a proposed methodology to semi-automatically identify points members of an unorganised 3D point cloud that are arranged in 3D space by planes. 
+The Discontinuity Set Extractor (DSE) is a MATLAB-based computer program designed to implement a method for identifying and extracting families of planar discontinuities from 3D point clouds. It is compatible with Windows, MAC, and Linux operating systems.
 
-DSE is an open source software programmen in MATLAB. It can currently run on Windows, MAC or Linux.
+This method was developed during Adrián Riquelme's doctoral thesis at the University of Alicante in 2015. DSE is an open-source program that can be executed on Windows, MAC, and Linux, and it accepts a 3D point cloud as input. Point clouds can be obtained through various means, such as 3D laser scanners (LiDAR or TLS), digital photogrammetry techniques (like SfM), or synthetic data. The program applies a proposed methodology to semi-automatically identify points within an unorganized 3D point cloud that are arranged in 3D space by planes.
+
+For more information, refer to the wiki available here: https://personal.ua.es/en/ariquelme/dse-wiki/dse-wiki.html
